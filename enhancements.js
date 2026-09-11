@@ -1,1 +1,1 @@
-const weddingRuntime=document.createElement('script');weddingRuntime.src='runtime-fixes.js?v=20260911g';document.head.appendChild(weddingRuntime);
+const weddingRuntime=document.createElement('script');weddingRuntime.src='runtime-fixes.js?v=20260911n';document.head.appendChild(weddingRuntime);
