@@ -1,0 +1,18 @@
+/* Wedding media cleanup + RSVP */
+.hero-photo{min-height:auto!important;padding-top:clamp(26px,5vw,54px)!important}
+.hero-photo-img{display:block;width:min(100%,1115px)!important;height:auto!important;max-width:1115px!important;object-fit:contain!important;border-radius:30px;margin:0 auto;box-shadow:0 18px 60px rgba(75,43,43,.18)}
+.hero-photo-overlay,.hero-copy{display:none!important}
+.surprise-section{padding-top:24px!important}
+.surprise-video{display:block;width:min(100%,760px);height:auto;max-height:80vh;object-fit:contain;margin:14px auto 0;border-radius:24px;background:#000;box-shadow:0 18px 60px rgba(0,0,0,.16)}
+.rsvp-section{padding-top:64px;padding-bottom:64px}
+.rsvp-card{width:min(100%,620px);margin:26px auto 0;padding:clamp(20px,5vw,34px);text-align:right;background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}
+.rsvp-card label{display:block;font-weight:800;margin-bottom:18px}
+.rsvp-card input[type="text"],.rsvp-card input[type="number"]{width:100%;min-height:50px;margin-top:7px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--text);font:inherit}
+.rsvp-card fieldset{border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:0 0 18px}
+.rsvp-card legend{font-weight:900;padding:0 8px}
+.rsvp-card .choice{display:flex;align-items:center;gap:10px;margin:10px 0;font-weight:700}
+.rsvp-card .choice input{width:20px;height:20px}
+.rsvp-card small{display:block;color:var(--muted);font-weight:400;margin-top:5px}
+.rsvp-card .primary{width:100%;margin-top:4px}
+.rsvp-card .status{text-align:center;margin-bottom:0}
+@media(max-width:700px){.hero-photo-img{border-radius:22px}.surprise-video{border-radius:18px}.rsvp-card{border-radius:20px}}
