@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
       - name: Convert MOV to browser-friendly MP4
         run: |
           ffmpeg -y -i assets/f3b10b02-0e35-4210-b8ee-10f4ae40319c.mov -c:v libx264 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 192k assets/david-diana-surprise.mp4
