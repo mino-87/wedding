@@ -30,7 +30,7 @@ async function shareFiles(files,text='David & Diana Wedding ❤️'){if(!navigat
     if(endpoint){
       for(let i=0;i<state.mediaFiles.length;i++){
         const file=state.mediaFiles[i];
-        const kind=/^video\\//.test(file.type)||/\\.mov$/i.test(file.name)?'video':'media';
+        const kind=/^video\//.test(file.type)||/\.mov$/i.test(file.name)?'video':'media';
         await uploadCentral(file,kind);
         setText(uploadStatus,`تم إرسال ${i+1} من ${state.mediaFiles.length} ❤️`);
       }
