@@ -1,0 +1,1 @@
+const weddingRuntime=document.createElement('script');weddingRuntime.src='runtime-fixes.js?v=20260911d';document.head.appendChild(weddingRuntime);
