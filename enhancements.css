@@ -1,352 +1,73 @@
-/* Wedding media cleanup + RSVP */
-.hero-photo{min-height:auto!important;padding-top:clamp(26px,5vw,54px)!important}
-.hero-photo-img{display:block;width:min(100%,1115px)!important;height:auto!important;max-width:1115px!important;object-fit:contain!important;border-radius:30px;margin:0 auto;box-shadow:0 18px 60px rgba(75,43,43,.18)}
-.hero-photo-overlay,.hero-copy{display:none!important}
-.surprise-section{padding-top:24px!important}
-.surprise-video{display:block;width:min(100%,760px);height:auto;max-height:80vh;object-fit:contain;margin:14px auto 0;border-radius:24px;background:#000;box-shadow:0 18px 60px rgba(0,0,0,.16)}
-.rsvp-section{padding-top:64px;padding-bottom:64px}
-.rsvp-card{width:min(100%,620px);margin:26px auto 0;padding:clamp(20px,5vw,34px);text-align:right;background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}
-.rsvp-card label{display:block;font-weight:800;margin-bottom:18px}
-.rsvp-card input[type="text"],.rsvp-card input[type="number"]{width:100%;min-height:50px;margin-top:7px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--text);font:inherit}
-.rsvp-card fieldset{border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:0 0 18px}
-.rsvp-card legend{font-weight:900;padding:0 8px}
-.rsvp-card .choice{display:flex;align-items:center;gap:10px;margin:10px 0;font-weight:700}
-.rsvp-card .choice input{width:20px;height:20px}
-.rsvp-card small{display:block;color:var(--muted);font-weight:400;margin-top:5px}
-.rsvp-card .primary{width:100%;margin-top:4px}
-.rsvp-card .status{text-align:center;margin-bottom:0}
-@media(max-width:700px){.hero-photo-img{border-radius:22px}.surprise-video{border-radius:18px}.rsvp-card{border-radius:20px}}
-/* Professional wedding direction: editorial cinema, warm ivory, wine and antique gold. */
+/* David & Diana — editorial wedding direction */
 :root{
-  --bg:#fbf7f2;
-  --surface:rgba(255,255,255,.92);
-  --surface-2:#24161d;
-  --text:#2d2025;
-  --muted:#786b70;
-  --accent:#b77982;
-  --accent-dark:#5b2431;
-  --gold:#d9b477;
-  --line:rgba(68,40,47,.14);
-  --shadow:0 24px 70px rgba(50,25,35,.14);
+  --bg:#f6f2eb;
+  --surface:#fffdf8;
+  --surface-2:#eee8dd;
+  --text:#24312d;
+  --muted:#6f7770;
+  --accent:#9c6c46;
+  --accent-dark:#38574e;
+  --accent-soft:#d9b4a1;
+  --sage:#aebbaa;
+  --line:rgba(56,87,78,.17);
+  --shadow:0 22px 70px rgba(46,54,48,.12);
+  --radius:26px;
 }
-body{
-  background:
-    radial-gradient(circle at 8% 10%,rgba(217,180,119,.12),transparent 25rem),
-    radial-gradient(circle at 92% 65%,rgba(183,121,130,.11),transparent 28rem),
-    var(--bg);
-}
-#languageControl{
-  position:fixed;
-  z-index:110;
-  top:calc(16px + var(--safe-top));
-  inset-inline-start:16px;
-}
-.language-toggle{
-  min-width:58px;
-  min-height:38px;
-  padding:7px 14px;
-  border:1px solid rgba(255,255,255,.6);
-  border-radius:999px;
-  background:rgba(36,22,29,.8);
-  color:#fff;
-  font-size:.78rem;
-  font-weight:900;
-  letter-spacing:.12em;
-  box-shadow:0 10px 30px rgba(36,22,29,.2);
-  backdrop-filter:blur(14px);
-}
-.gate{
-  isolation:isolate;
-  background:
-    linear-gradient(135deg,rgba(30,17,23,.76),rgba(91,36,49,.54)),
-    url("assets/david-diana-hero.jpeg?v=20260911") center/cover no-repeat;
-  color:#fff;
-}
-.gate:before{
-  content:"";
-  inset:0;
-  left:0;
-  top:0;
-  right:0;
-  bottom:0;
-  z-index:-1;
-  opacity:1;
-  transform:none;
-  background:linear-gradient(180deg,rgba(23,12,17,.22),rgba(23,12,17,.78));
-}
-.gate:after{
-  content:"";
-  inset:0;
-  z-index:-1;
-  opacity:1;
-  transform:none;
-  background:radial-gradient(circle at 50% 18%,rgba(217,180,119,.2),transparent 26rem);
-}
-.gate-card{
-  position:relative;
-  overflow:hidden;
-  background:rgba(34,20,28,.62);
-  border:1px solid rgba(255,255,255,.22);
-  box-shadow:0 28px 100px rgba(0,0,0,.3);
-  backdrop-filter:blur(22px);
-}
-.gate-card:after{
-  content:"";
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(217,180,119,.38);
-  border-radius:calc(var(--radius) - 10px);
-  pointer-events:none;
-}
-.gate .eyebrow,.gate h2{color:#fff}
-.gate .eyebrow{color:var(--gold)}
-.gate-card p:not(.eyebrow){color:rgba(255,255,255,.88)}
-.gate .privacy{color:rgba(255,255,255,.66)}
-.gate .primary,.hero-rsvp{background:var(--gold);color:#2a1820;box-shadow:0 12px 28px rgba(0,0,0,.25)}
-.hero-photo{
-  position:relative;
-  width:100%;
-  height:min(92svh,920px);
-  min-height:620px;
-  max-width:none;
-  padding:0!important;
-  overflow:hidden;
-  display:grid;
-  place-items:center;
-  background:#21151b url("assets/david-diana-hero.jpeg?v=20260911") center/cover no-repeat;
-}
-.hero-photo:before{
-  content:"";
-  position:absolute;
-  inset:-4%;
-  background:inherit;
-  filter:blur(28px) brightness(.46) saturate(.8);
-  transform:scale(1.08);
-}
-.hero-photo-img{
-  position:relative;
-  z-index:1;
-  display:block;
-  width:100%!important;
-  height:100%!important;
-  max-width:none!important;
-  object-fit:contain!important;
-  border-radius:0!important;
-  margin:0;
-  box-shadow:none!important;
-  filter:saturate(.96) contrast(1.04);
-}
-.hero-shade{
-  position:absolute;
-  z-index:2;
-  inset:0;
-  background:linear-gradient(180deg,rgba(18,9,14,.1) 36%,rgba(18,9,14,.76) 100%);
-  pointer-events:none;
-}
-.hero-copy{
-  position:absolute;
-  z-index:3;
-  inset-inline:18px;
-  bottom:clamp(42px,8vw,88px);
-  display:block!important;
-  max-width:760px;
-  margin:auto;
-  color:#fff;
-  text-align:center;
-  text-shadow:0 3px 22px rgba(0,0,0,.45);
-}
-.hero-kicker{
-  margin:0 0 10px;
-  color:var(--gold);
-  font-size:.78rem;
-  font-weight:900;
-  letter-spacing:.28em;
-}
-.hero-copy h2{
-  margin:0;
-  color:#fff;
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:clamp(3rem,9vw,7.4rem);
-  font-weight:500;
-  letter-spacing:-.045em;
-}
-.hero-copy h2 span{color:var(--gold);font-weight:400}
-.hero-date{
-  margin:12px 0 22px;
-  color:rgba(255,255,255,.9);
-  font-size:clamp(1rem,2.4vw,1.25rem);
-  font-weight:800;
-  letter-spacing:.38em;
-  direction:ltr;
-}
-.hero-date span{color:var(--gold);padding:0 .25em}
-.hero-rsvp{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:46px;
-  padding:10px 22px;
-  border-radius:999px;
-  text-decoration:none;
-  font-size:.95rem;
-  font-weight:900;
-  text-shadow:none;
-  transition:transform .18s ease,box-shadow .18s ease;
-}
-.hero-rsvp:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(0,0,0,.28)}
-.floating-tools{
-  top:calc(16px + var(--safe-top));
-  right:16px;
-  padding:5px;
-  border:1px solid rgba(255,255,255,.25);
-  border-radius:999px;
-  background:rgba(36,22,29,.72);
-  box-shadow:0 10px 30px rgba(0,0,0,.18);
-  backdrop-filter:blur(14px);
-}
-.floating-tools .icon-button{
-  width:40px;
-  height:40px;
-  background:transparent;
-  color:#fff;
-  box-shadow:none;
-}
-.section{
-  position:relative;
-  max-width:1080px;
-  padding-top:clamp(76px,9vw,120px);
-  padding-bottom:clamp(76px,9vw,120px);
-}
-.section:not(.hero):after{
-  content:"";
-  position:absolute;
-  bottom:0;
-  left:50%;
-  width:78px;
-  height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  transform:translateX(-50%);
-}
-.section.alt{
-  background:
-    radial-gradient(circle at 18% 18%,rgba(217,180,119,.09),transparent 22rem),
-    linear-gradient(135deg,#24161d,#351b27);
-  color:#fff;
-}
-.section.alt .lead,.section.alt p{color:rgba(255,255,255,.75)}
-.section.alt h2{color:#fff}
-.section.alt:after{background:linear-gradient(90deg,transparent,rgba(217,180,119,.8),transparent)}
-.feature-icon{filter:drop-shadow(0 8px 14px rgba(217,180,119,.2))}
-.save-date{
-  background:linear-gradient(180deg,rgba(255,255,255,.3),transparent);
-}
-.save-date h2,.rsvp-section h2,#missionSection h2,#voiceSection h2,#cameraSection h2{
-  font-family:Georgia,"Times New Roman",serif;
-  font-weight:500;
-  letter-spacing:-.02em;
-}
-.details-grid{gap:18px;margin-top:42px}
-.details-grid article{
-  position:relative;
-  min-height:142px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  background:rgba(255,255,255,.84);
-  border:1px solid rgba(91,36,49,.12);
-  border-radius:24px;
-  box-shadow:0 14px 40px rgba(50,25,35,.07);
-}
-.details-grid article:before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:20%;
-  right:20%;
-  height:3px;
-  border-radius:0 0 999px 999px;
-  background:var(--gold);
-}
-.details-grid span{color:var(--accent-dark)}
-.countdown{gap:12px;margin-top:48px}
-.countdown>div{
-  border:1px solid rgba(217,180,119,.18);
-  background:linear-gradient(145deg,#3b202b,#22151b);
-  border-radius:22px;
-  box-shadow:0 14px 30px rgba(36,22,29,.14);
-}
-.countdown strong{color:var(--gold)}
-.rsvp-card{
-  border:1px solid rgba(91,36,49,.14);
-  box-shadow:0 20px 55px rgba(50,25,35,.1);
-}
-.rsvp-card fieldset{background:rgba(251,247,242,.65)}
-.rsvp-card .choice input{accent-color:var(--accent-dark)}
-.drop-zone{
-  background:rgba(255,255,255,.78);
-  border-color:rgba(183,121,130,.46);
-  box-shadow:0 14px 36px rgba(50,25,35,.06);
-}
-.mission-card{border-color:rgba(217,180,119,.25)}
-#soundStartFallback{
-  display:block;
-  width:max-content;
-  margin:18px auto 0;
-  background:var(--gold);
-  color:#2a1820;
-}
+body{font-family:"Avenir Next","Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);letter-spacing:.01em}
+h1,h2,.frame-title{font-family:Georgia,"Times New Roman",serif;font-weight:500;letter-spacing:-.035em}
+h1{color:var(--accent-dark)}
+h2{color:var(--accent-dark)}
+.section{padding-block:clamp(66px,9vw,122px)}
+.section.alt{background:linear-gradient(135deg,#ece7dc 0%,#f3eee5 100%)}
+.eyebrow{color:var(--accent);font-size:.72rem;letter-spacing:.22em}
+.lead{color:#657069;max-width:650px}
+.gate{background:
+  radial-gradient(circle at 8% 12%,rgba(217,180,161,.34),transparent 27%),
+  radial-gradient(circle at 92% 80%,rgba(174,187,170,.36),transparent 30%),
+  var(--bg)}
+.gate:before,.gate:after{content:"";width:180px;height:180px;border:1px solid rgba(156,108,70,.22);border-radius:50%;font-size:0}
+.gate:before{left:-72px;top:12%}
+.gate:after{right:-78px;bottom:10%}
+.gate-card{background:rgba(255,253,248,.88);border:1px solid rgba(255,255,255,.92);border-radius:34px;box-shadow:var(--shadow);backdrop-filter:blur(16px)}
+.gate-card h1{font-size:clamp(3.1rem,12vw,6.5rem);margin-top:.2em}
+.gate-card h1 span{color:var(--accent);font-weight:400}
+.gate .primary{margin-top:20px}
+.primary,.secondary{min-height:52px;padding:13px 25px;border-radius:999px}
+.primary{background:var(--accent-dark);box-shadow:0 12px 28px rgba(56,87,78,.22)}
+.primary:hover,.secondary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(56,87,78,.15)}
+.primary:active,.secondary:active,.text-button:active{transform:scale(.97)}
+.primary:focus-visible,.secondary:focus-visible,.text-button:focus-visible,.language-toggle:focus-visible{outline:3px solid rgba(156,108,70,.35);outline-offset:3px}
+.hero-photo{background:var(--bg);padding:0!important}
+.hero-photo-img{width:100%!important;max-width:none!important;border:0!important;outline:0!important;border-radius:0!important;box-shadow:none!important;background:transparent}
+.language-bar{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 18px;background:var(--surface);border-bottom:1px solid var(--line);color:var(--muted);font-size:.85rem}
+.language-switcher{display:flex;justify-content:center;gap:8px;margin-bottom:20px}
+.language-toggle{border:1px solid transparent;background:transparent;color:var(--muted);border-radius:999px;padding:8px 13px;cursor:pointer;font-weight:800;transition:all .18s ease}
+.language-toggle.active{background:rgba(174,187,170,.34);border-color:rgba(56,87,78,.18);color:var(--accent-dark)}
+.language-bar .language-toggle{padding:5px 10px}
+.surprise-section{padding-top:clamp(35px,5vw,58px);padding-bottom:clamp(48px,7vw,76px)}
+.surprise-video{border-radius:18px;box-shadow:0 16px 46px rgba(36,49,45,.14)}
+.details-grid article{background:rgba(255,253,248,.78);border:1px solid var(--line);border-radius:18px;box-shadow:none;padding:24px 18px}
+.details-grid span{color:var(--accent);letter-spacing:.19em}
+.countdown{margin-top:44px;gap:12px}
+.countdown>div{background:var(--accent-dark);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:19px 8px;box-shadow:0 12px 28px rgba(56,87,78,.13)}
+.countdown strong{font-family:Georgia,"Times New Roman",serif;font-weight:500}
+.rsvp-card{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+.rsvp-card input[type="text"],.rsvp-card input[type="number"]{background:#fcfaf5;border-color:var(--line);border-radius:13px}
+.rsvp-card fieldset{border-color:var(--line)}
+.rsvp-feedback{min-height:1.6em;margin:.7rem 0 0;color:var(--accent-dark);font-weight:800}
+.mission-card{background:var(--surface);border-color:var(--line);box-shadow:var(--shadow);border-radius:20px}
+.drop-zone{background:rgba(255,253,248,.8);border-color:rgba(156,108,70,.36);border-radius:20px}
+.record-button{background:var(--accent);box-shadow:0 12px 30px rgba(156,108,70,.25)}
+.record-button.recording{animation:pulse 1.25s ease-in-out infinite}
+footer{border-top-color:var(--line);color:var(--muted)}
+.camera-dialog{background:var(--surface);border-radius:24px}
+.wedding-frame{border-color:rgba(255,255,255,.9);border-radius:17px}
+@keyframes pulse{50%{box-shadow:0 0 0 15px rgba(156,108,70,.12),0 12px 30px rgba(156,108,70,.28)}}
 @media(max-width:700px){
-  #languageControl{top:calc(12px + var(--safe-top));inset-inline-start:12px}
-  .language-toggle{min-width:52px;min-height:36px;padding-inline:12px}
-  .hero-photo{height:82svh;min-height:560px}
-  .hero-photo-img{object-fit:contain!important}
-  .hero-copy{bottom:38px}
-  .hero-copy h2{font-size:clamp(2.8rem,14vw,5rem)}
-  .hero-date{letter-spacing:.24em}
-  .section{padding-top:68px;padding-bottom:68px}
-  .floating-tools{right:12px}
+  .gate-card{padding:30px 22px}
+  .language-bar{padding-block:12px}
+  .section{padding-block:58px}
+  .details-grid article{padding-block:18px}
 }
-@media(prefers-reduced-motion:reduce){
-  .hero-rsvp{transition:none}
-}
-
-/* Correction pass: clean editorial wedding layout with no image overlays. */
-body{font-family:"Avenir Next","Segoe UI",Tahoma,Arial,sans-serif;background:#fbf8f2;color:#2c3430}
-h1,h2,.hero-copy h2{font-family:Georgia,"Times New Roman",serif}
-.gate{background:linear-gradient(135deg,rgba(30,45,39,.86),rgba(82,54,54,.7)),url("assets/david-diana-hero.jpeg?v=20260911") center/cover no-repeat}
-.gate-card{padding:clamp(28px,6vw,54px);border-radius:24px;background:rgba(255,252,246,.92);border:1px solid rgba(255,255,255,.85);color:#2c3430;box-shadow:0 26px 80px rgba(24,34,30,.28);backdrop-filter:blur(10px)}
-.gate-card:after{inset:10px;border-color:rgba(185,149,91,.45);border-radius:18px}
-.gate .eyebrow,.gate h2{color:#5b413d}.gate .eyebrow{color:#9c783f}.gate-card p:not(.eyebrow){color:#59615c}.gate .privacy{color:#788079}.gate .primary{background:#9c783f;color:#fff}
-.gate-language,.language-bar{display:flex;align-items:center;justify-content:center;gap:8px}
-.gate-language{position:relative;z-index:2;margin:-4px 0 18px;justify-content:flex-end}
-.language-bar{min-height:52px;padding:8px 18px;background:#f2e9dc;border-bottom:1px solid rgba(95,70,55,.1);color:#68574a;font-size:.9rem}
-.language-toggle{min-width:66px;min-height:34px;padding:5px 12px;border:1px solid rgba(156,120,63,.42);border-radius:999px;background:#fffaf2;color:#71552a;font-size:.78rem;font-weight:900;letter-spacing:.08em;box-shadow:0 5px 16px rgba(91,65,52,.1)}
-.gate-language .language-toggle{background:#fffaf2}
-.hero-photo{display:block;height:auto;min-height:0;padding:0!important;overflow:hidden;background:#f7f0e8}
-.hero-photo:before,.hero-shade{display:none!important}
-.hero-photo-img{position:relative;z-index:1;display:block;width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;object-fit:contain!important;border:0!important;outline:0!important;border-radius:0!important;margin:0;box-shadow:none!important;filter:none}
-.hero-copy{position:relative;inset:auto;z-index:2;display:block!important;max-width:none;padding:34px 20px 40px;background:linear-gradient(180deg,#f7f0e8,#fffaf3);color:#2c3430;text-align:center;text-shadow:none}
-.hero-kicker{margin:0 0 9px;color:#9c783f;font-size:.74rem;letter-spacing:.28em}
-.hero-copy h2{margin:0;color:#5b413d;font-size:clamp(2.7rem,8vw,6.4rem);font-weight:500}
-.hero-copy h2 span{color:#9c783f}.hero-date{margin:12px 0 0;color:#6f786f;font-size:1rem;letter-spacing:.35em}
-.floating-tools{position:static;z-index:auto;display:flex;width:max-content;margin:0 auto 28px;padding:5px;border:1px solid rgba(156,120,63,.25);background:#fffaf3;box-shadow:0 7px 22px rgba(91,65,52,.1);backdrop-filter:none}
-.floating-tools .icon-button{width:38px;height:38px;color:#6c4d42;background:transparent;box-shadow:none}
-.section{max-width:960px;padding-top:clamp(62px,8vw,104px);padding-bottom:clamp(62px,8vw,104px);border-top:1px solid rgba(156,120,63,.12)}
-.section:not(.hero):after{content:"✦";bottom:-.72rem;width:auto;height:auto;background:#fbf8f2;color:#b9955b;font-size:1.15rem;line-height:1;padding:0 12px;transform:translateX(-50%)}
-.section.alt{background:linear-gradient(135deg,#edf2ed,#e5eee8);color:#2c3430}
-.section.alt .lead,.section.alt p{color:#66736b}.section.alt h2{color:#40534a}.section.alt:after{background:#eaf0e9;color:#b9955b}
-.section.alt .feature-icon{filter:none}
-.save-date{background:#fffaf3}.save-date h2,.rsvp-section h2,#missionSection h2,#voiceSection h2,#cameraSection h2{color:#5b413d}
-.details-grid article{background:#fffdf9;border-color:rgba(156,120,63,.2);box-shadow:0 12px 30px rgba(91,65,52,.06)}
-.details-grid article:before{background:#c7a46b}
-.countdown{margin-top:42px}.countdown>div{background:#40534a;border-color:rgba(255,255,255,.15);border-radius:18px;box-shadow:0 12px 26px rgba(64,83,74,.16)}.countdown strong{color:#f3d39b}
-.rsvp-card{background:#fffdf9;border-color:rgba(156,120,63,.2);box-shadow:0 18px 42px rgba(91,65,52,.08)}
-.rsvp-card fieldset{background:#fbf5ec;border-color:rgba(156,120,63,.2)}
-.rsvp-card .choice input{accent-color:#9c783f}
-.primary{background:#5b413d;box-shadow:0 8px 20px rgba(91,65,52,.2)}.secondary{border-color:rgba(156,120,63,.35);background:#fffaf3;color:#5b413d}
-button,.primary,.secondary,.hero-rsvp{transition:transform .16s ease,box-shadow .16s ease,background-color .16s ease}button:active,.primary:active,.secondary:active{transform:scale(.96)}
-.rsvp-feedback{position:relative;margin:18px 0 20px;padding:16px 18px;border-radius:18px;text-align:center;overflow:hidden;animation:feedbackIn .32s ease both}
-.rsvp-feedback strong{display:block;font-size:1rem;line-height:1.65}.rsvp-feedback.is-yes{background:linear-gradient(135deg,#fff2c9,#f9dfae);color:#6b4c24;border:1px solid rgba(185,149,91,.38)}.rsvp-feedback.is-no{background:linear-gradient(135deg,#edf0f0,#e6e8e8);color:#5c6665;border:1px solid rgba(98,111,108,.2)}
-.feedback-sparkles{display:block;margin-top:4px;color:#b08339;letter-spacing:.45em;animation:sparklePop .8s ease both}
-@keyframes feedbackIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}@keyframes sparklePop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
-@media(max-width:700px){.hero-photo-img{object-fit:contain!important}.hero-copy{padding-top:28px;padding-bottom:34px}.floating-tools{margin-bottom:20px}.language-bar{min-height:48px}}
+@media(prefers-reduced-motion:reduce){.primary,.secondary,.text-button,.language-toggle{transition:none!important}}
+\n.confetti-piece{display:inline-block;margin-inline:3px;color:var(--accent);animation:confetti .9s ease-out forwards;animation-delay:calc(var(--i)*12ms)}@keyframes confetti{0%{opacity:0;transform:translateY(8px) rotate(0)}35%{opacity:1}100%{opacity:0;transform:translateY(-22px) rotate(150deg)}}.rsvp-feedback.is-no{color:#7f7770}
