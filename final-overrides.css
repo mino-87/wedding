@@ -1,0 +1,26 @@
+/* Final focused redesign: cleaner invitation card, no fake video frame */
+.event-intro{background:#f7f1e8!important;padding:86px 18px 105px!important}
+.event-intro .mini-label{color:#8d3f4a!important}
+.event-title{margin-bottom:34px!important}
+.date-ticket{width:min(92vw,820px)!important;margin:0 auto!important;padding:34px 26px!important;background:#fffaf4!important;border:1px solid rgba(23,22,21,.14)!important;box-shadow:0 18px 50px rgba(55,42,31,.08)!important;display:grid!important;grid-template-columns:auto 1fr!important;grid-template-rows:auto auto auto!important;column-gap:34px!important;row-gap:9px!important;align-items:center!important;direction:ltr!important;border-radius:28px!important}
+.date-ticket strong{grid-column:1!important;grid-row:1/4!important;min-height:0!important;background:transparent!important;box-shadow:none!important;color:#8d3f4a!important;font:400 clamp(7.6rem,22vw,13rem)/.72 'Italiana'!important;padding:0 8px!important}
+.date-ticket .weekday,.date-ticket .month-year,.date-ticket .event-time{grid-column:2!important;text-align:left!important;border:0!important;padding:0!important;margin:0!important}
+.date-ticket .weekday{grid-row:1!important;font:600 clamp(1.15rem,3vw,1.5rem) 'DM Sans','Noto Sans Arabic'!important;color:#8d3f4a!important}
+.date-ticket .month-year{grid-row:2!important;font:500 clamp(2rem,5vw,3.35rem)/1.15 'Noto Sans Arabic','DM Sans'!important;color:#171615!important}
+.date-ticket .event-time{grid-row:3!important;font:600 clamp(1.25rem,3.2vw,1.7rem) 'DM Sans','Noto Sans Arabic'!important;color:#5e564f!important}
+.event-copy{font-size:1.06rem!important;line-height:2!important}
+.venue strong{font-size:clamp(1.25rem,3.4vw,1.6rem)!important}
+.map-button{font-size:1rem!important;padding:15px 24px!important}
+.countdown-wrap{border:0!important;border-radius:0!important;padding:0!important;width:min(92vw,760px)!important}
+.countdown{border:0!important;gap:12px!important}
+.countdown>div{border:0!important;border-radius:18px!important;background:rgba(255,255,255,.55)!important;padding:18px 8px!important}
+.countdown strong{font-size:clamp(3rem,8vw,5.1rem)!important}
+.surprise-section{background:#171615!important;padding:105px 0 0!important;overflow:hidden!important}
+.surprise-section>.mini-label,.surprise-section>h2,.surprise-section>.section-copy{padding-inline:20px!important}
+.surprise-section .section-copy:empty{display:none!important}
+.video-stage{width:100%!important;max-width:none!important;margin:40px 0 0!important;padding:0!important;background:#000!important;box-shadow:none!important;transform:none!important}
+.video-stage:after,.video-stage:before{display:none!important;content:none!important}
+.surprise-video{width:100%!important;max-height:none!important;border-radius:0!important;display:block!important;background:#000!important}
+.mission-section .section-copy{max-width:700px!important;font-size:1rem!important;line-height:2.05!important}
+.drop-section .section-copy,.voice-section .section-copy,.camera-section .section-copy{font-size:1rem!important;line-height:2!important}
+@media(max-width:720px){.date-ticket{grid-template-columns:40% 60%!important;grid-template-rows:auto auto auto!important;column-gap:14px!important;padding:28px 18px!important;border-radius:22px!important}.date-ticket strong{grid-column:1!important;grid-row:1/4!important;font-size:31vw!important}.date-ticket .weekday{grid-column:2!important;grid-row:1!important;text-align:right!important}.date-ticket .month-year{grid-column:2!important;grid-row:2!important;text-align:right!important;font-size:1.75rem!important}.date-ticket .event-time{grid-column:2!important;grid-row:3!important;text-align:right!important;font-size:1.2rem!important}.event-copy{font-size:.98rem!important}.countdown>div{padding:16px 3px!important}.countdown strong{font-size:9.5vw!important}.surprise-section{padding-top:88px!important}}
