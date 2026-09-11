@@ -25,13 +25,14 @@ function doPost(e) {
 function saveRsvp_(p) {
   var sheet = SpreadsheetApp.openById(IDS.spreadsheet).getSheets()[0];
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Timestamp','Name','Attending','Companions','Event']);
+    sheet.appendRow(['Name','Attending','Companions','Total Guests','Submitted At']);
   }
   var name = clean_(p.name, 100);
   var attending = p.attending === 'yes' ? 'yes' : p.attending === 'no' ? 'no' : '';
   if (!name || !attending) throw new Error('INVALID_RSVP');
   var companions = attending === 'yes' ? Math.max(0, Math.min(10, Number(p.companions) || 0)) : 0;
-  sheet.appendRow([new Date(), name, attending, companions, clean_(p.event, 120) || 'David & Diana 24.09.2026']);
+  var totalGuests = attending === 'yes' ? 1 + companions : 0;
+  sheet.appendRow([name, attending, companions, totalGuests, new Date()]);
   return output_({ok:true, action:'rsvp'});
 }
 
