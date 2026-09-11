@@ -3,7 +3,6 @@
   const surprise = $('#surpriseVideo');
   const gate = $('#gate');
   const invitation = $('#invitation');
-  let primed = false;
 
   async function primeSurprise() {
     if (!surprise) return;
@@ -15,13 +14,10 @@
         surprise.load();
       }
       surprise.playsInline = true;
-      surprise.autoplay = false;
       surprise.muted = false;
       surprise.volume = 0.01;
       surprise.currentTime = 0;
-      const p = surprise.play();
-      if (p?.then) await p;
-      primed = true;
+      await surprise.play();
     } catch (e) {
       console.warn('Surprise prime failed', e);
     }
@@ -33,23 +29,19 @@
       surprise.muted = false;
       surprise.volume = 1;
       surprise.currentTime = 0;
-      const p = surprise.play();
-      if (p?.then) await p;
+      await surprise.play();
     } catch (e) {
       console.warn('Surprise autoplay with sound was blocked', e);
     }
   }
 
-  $('#startSmile')?.addEventListener('click', () => { primeSurprise(); }, true);
+  $('#startSmile')?.addEventListener('click', primeSurprise, true);
 
   if (gate && invitation) {
     const observer = new MutationObserver(() => {
       const gateHidden = gate.classList.contains('hidden') || gate.getAttribute('aria-hidden') === 'true' || getComputedStyle(gate).display === 'none';
       const invitationVisible = !invitation.classList.contains('hidden') && getComputedStyle(invitation).display !== 'none';
-      if (gateHidden && invitationVisible) {
-        observer.disconnect();
-        startSurpriseFromBeginning();
-      }
+      if (gateHidden && invitationVisible) startSurpriseFromBeginning();
     });
     observer.observe(gate, {attributes:true, attributeFilter:['class','style','aria-hidden']});
     observer.observe(invitation, {attributes:true, attributeFilter:['class','style']});
@@ -89,19 +81,30 @@
       'Record a 10-second marriage tip from a guest you choose at random.'
     ]
   };
-  let last = -1;
+
+  let last = {ar:-1,en:-1};
+  const language = () => document.documentElement.lang?.toLowerCase().startsWith('en') ? 'en' : 'ar';
+  function clearMission(){
+    const card = $('#missionCard');
+    if(card){card.textContent='';card.classList.add('hidden');}
+  }
+
   $('#missionButton')?.addEventListener('click', e => {
     e.preventDefault();
     e.stopImmediatePropagation();
-    const lang = document.documentElement.lang === 'en' ? 'en' : 'ar';
+    const lang = language();
     const list = missions[lang];
     let i;
-    do { i = Math.floor(Math.random() * list.length); } while (list.length > 1 && i === last);
-    last = i;
+    do { i = Math.floor(Math.random() * list.length); } while (list.length > 1 && i === last[lang]);
+    last[lang] = i;
     const card = $('#missionCard');
     if (card) {
       card.textContent = `🎯 ${list[i]}`;
+      card.dir = lang === 'en' ? 'ltr' : 'rtl';
+      card.lang = lang;
       card.classList.remove('hidden');
     }
   }, true);
+
+  new MutationObserver(clearMission).observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
 })();
