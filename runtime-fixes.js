@@ -9,7 +9,6 @@
   const config = window.WEDDING_CONFIG || {};
   let stream, detector, raf, smileSince = 0, unlocking = false;
 
-  const tx = (ar,en) => document.documentElement.lang === 'en' ? en : ar;
   function stopCamera(){ cancelAnimationFrame(raf); stream?.getTracks?.().forEach(t => t.stop()); stream = null; if (smileVideo) smileVideo.srcObject = null; }
   function primeVideo(){
     if(!surprise) return;
@@ -28,7 +27,7 @@
       b.id = 'soundStartFallback';
       b.className = 'primary';
       b.type = 'button';
-      b.textContent = tx('🔊 شغّل المفاجأة بالصوت','🔊 Play the surprise with sound');
+      b.textContent = '🔊 شغّل المفاجأة بالصوت';
       surprise.insertAdjacentElement('afterend', b);
       b.addEventListener('click', async () => {
         try { surprise.muted = false; surprise.volume = 1; await surprise.play(); b.remove(); }
@@ -73,11 +72,11 @@
         if(!smileSince) smileSince = now;
         const held = now - smileSince;
         const pct = Math.min(100, Math.round(held / 30));
-        status.textContent = held < 3000 ? tx('خليك مبتسم… Scan ' + pct + '% 😄','Keep smiling… Scan ' + pct + '% 😄') : tx('الضحكة اتأكدت… المفاجأة بتبدأ 🎬','Smile confirmed… the surprise is starting 🎬');
+        status.textContent = held < 3000 ? 'خليك مبتسم… Scan ' + pct + '% 😄' : 'الضحكة اتأكدت… المفاجأة بتبدأ 🎬';
         if(held >= 3000){ unlock(); return; }
       } else {
         smileSince = 0;
-        status.textContent = tx('ابتسم للكاميرا وخليك ثابت 3 ثواني 😄','Smile at the camera and hold it for 3 seconds 😄');
+        status.textContent = 'ابتسم للكاميرا وخليك ثابت 3 ثواني 😄';
       }
     } catch(_) {}
     raf = requestAnimationFrame(loop);
@@ -88,21 +87,22 @@
     unlocking = false;
     primeVideo();
     if(!dialog.open) dialog.showModal();
-    status.textContent = tx('جارٍ تجهيز الكاميرا…','Preparing the camera…');
+    status.textContent = 'جارٍ تجهيز الكاميرا…';
     try {
       stopCamera();
       stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
       smileVideo.srcObject = stream;
       await smileVideo.play();
-      status.textContent = tx('ابتسم وخليك ثابت 3 ثواني 😄','Smile and hold it for 3 seconds 😄');
+      status.textContent = 'ابتسم وخليك ثابت 3 ثواني 😄';
       await getDetector();
       loop();
     } catch(_) {
-      status.textContent = tx('تعذر تشغيل الفحص التلقائي. استخدم الزر البديل.','Automatic scan failed. Use the button below.');
+      status.textContent = 'تعذر تشغيل الفحص التلقائي. استخدم الزر البديل.';
       $('#smileFallback')?.classList.remove('hidden');
     }
   }
   $('#startSmile')?.addEventListener('click',start,true);
+  $('#reopenSmile')?.addEventListener('click',start,true);
   $('#manualUnlock')?.addEventListener('click',e => { e.preventDefault(); e.stopImmediatePropagation(); primeVideo(); unlock(); },true);
   $('#smileFallback')?.addEventListener('click',e => { e.preventDefault(); e.stopImmediatePropagation(); primeVideo(); unlock(); },true);
   dialog?.addEventListener('close',stopCamera);
