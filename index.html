@@ -33,16 +33,20 @@
     <button id="smileFallback" class="secondary hidden" type="button">أنا ابتسمت 😄 — افتح الدعوة</button>
   </dialog>
   <main id="invitation" class="hidden">
-    <header class="hero section">
+    <header class="hero section hero-photo">
       <div class="floating-tools" dir="ltr">
         <button id="musicToggle" class="icon-button" type="button" aria-label="تشغيل أو إيقاف الموسيقى" aria-pressed="false">♫</button>
         <button id="reopenSmile" class="icon-button" type="button" aria-label="فتح كاميرا الابتسامة">😄</button>
       </div>
-      <p class="eyebrow">David & Diana</p>
-      <h1>WE'RE GETTING MARRIED</h1>
-      <div class="ring" aria-hidden="true">💍</div>
-      <p class="movie-line">🎬 المفاجأة بدأت!</p>
+      <img class="hero-photo-img" src="assets/david-diana-hero.jpeg" alt="David & Diana" fetchpriority="high" />
     </header>
+    <section class="section surprise-section">
+      <p class="movie-line">🎬 المفاجأة بدأت!</p>
+      <video class="surprise-video" controls playsinline preload="metadata">
+        <source src="assets/f3b10b02-0e35-4210-b8ee-10f4ae40319c.mov" type="video/quicktime" />
+        متصفحك لا يدعم تشغيل الفيديو.
+      </video>
+    </section>
     <section class="section save-date">
       <p class="eyebrow">SAVE THE DATE</p>
       <h2>Okay… it’s official!</h2>
