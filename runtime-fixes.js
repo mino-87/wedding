@@ -103,7 +103,6 @@
     }
   }
   $('#startSmile')?.addEventListener('click',start,true);
-  $('#reopenSmile')?.addEventListener('click',start,true);
   $('#manualUnlock')?.addEventListener('click',e => { e.preventDefault(); e.stopImmediatePropagation(); primeVideo(); unlock(); },true);
   $('#smileFallback')?.addEventListener('click',e => { e.preventDefault(); e.stopImmediatePropagation(); primeVideo(); unlock(); },true);
   dialog?.addEventListener('close',stopCamera);
