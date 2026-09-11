@@ -309,3 +309,44 @@ body{
 @media(prefers-reduced-motion:reduce){
   .hero-rsvp{transition:none}
 }
+
+/* Correction pass: clean editorial wedding layout with no image overlays. */
+body{font-family:"Avenir Next","Segoe UI",Tahoma,Arial,sans-serif;background:#fbf8f2;color:#2c3430}
+h1,h2,.hero-copy h2{font-family:Georgia,"Times New Roman",serif}
+.gate{background:linear-gradient(135deg,rgba(30,45,39,.86),rgba(82,54,54,.7)),url("assets/david-diana-hero.jpeg?v=20260911") center/cover no-repeat}
+.gate-card{padding:clamp(28px,6vw,54px);border-radius:24px;background:rgba(255,252,246,.92);border:1px solid rgba(255,255,255,.85);color:#2c3430;box-shadow:0 26px 80px rgba(24,34,30,.28);backdrop-filter:blur(10px)}
+.gate-card:after{inset:10px;border-color:rgba(185,149,91,.45);border-radius:18px}
+.gate .eyebrow,.gate h2{color:#5b413d}.gate .eyebrow{color:#9c783f}.gate-card p:not(.eyebrow){color:#59615c}.gate .privacy{color:#788079}.gate .primary{background:#9c783f;color:#fff}
+.gate-language,.language-bar{display:flex;align-items:center;justify-content:center;gap:8px}
+.gate-language{position:relative;z-index:2;margin:-4px 0 18px;justify-content:flex-end}
+.language-bar{min-height:52px;padding:8px 18px;background:#f2e9dc;border-bottom:1px solid rgba(95,70,55,.1);color:#68574a;font-size:.9rem}
+.language-toggle{min-width:66px;min-height:34px;padding:5px 12px;border:1px solid rgba(156,120,63,.42);border-radius:999px;background:#fffaf2;color:#71552a;font-size:.78rem;font-weight:900;letter-spacing:.08em;box-shadow:0 5px 16px rgba(91,65,52,.1)}
+.gate-language .language-toggle{background:#fffaf2}
+.hero-photo{display:block;height:auto;min-height:0;padding:0!important;overflow:hidden;background:#f7f0e8}
+.hero-photo:before,.hero-shade{display:none!important}
+.hero-photo-img{position:relative;z-index:1;display:block;width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;object-fit:contain!important;border:0!important;outline:0!important;border-radius:0!important;margin:0;box-shadow:none!important;filter:none}
+.hero-copy{position:relative;inset:auto;z-index:2;display:block!important;max-width:none;padding:34px 20px 40px;background:linear-gradient(180deg,#f7f0e8,#fffaf3);color:#2c3430;text-align:center;text-shadow:none}
+.hero-kicker{margin:0 0 9px;color:#9c783f;font-size:.74rem;letter-spacing:.28em}
+.hero-copy h2{margin:0;color:#5b413d;font-size:clamp(2.7rem,8vw,6.4rem);font-weight:500}
+.hero-copy h2 span{color:#9c783f}.hero-date{margin:12px 0 0;color:#6f786f;font-size:1rem;letter-spacing:.35em}
+.floating-tools{position:static;z-index:auto;display:flex;width:max-content;margin:0 auto 28px;padding:5px;border:1px solid rgba(156,120,63,.25);background:#fffaf3;box-shadow:0 7px 22px rgba(91,65,52,.1);backdrop-filter:none}
+.floating-tools .icon-button{width:38px;height:38px;color:#6c4d42;background:transparent;box-shadow:none}
+.section{max-width:960px;padding-top:clamp(62px,8vw,104px);padding-bottom:clamp(62px,8vw,104px);border-top:1px solid rgba(156,120,63,.12)}
+.section:not(.hero):after{content:"✦";bottom:-.72rem;width:auto;height:auto;background:#fbf8f2;color:#b9955b;font-size:1.15rem;line-height:1;padding:0 12px;transform:translateX(-50%)}
+.section.alt{background:linear-gradient(135deg,#edf2ed,#e5eee8);color:#2c3430}
+.section.alt .lead,.section.alt p{color:#66736b}.section.alt h2{color:#40534a}.section.alt:after{background:#eaf0e9;color:#b9955b}
+.section.alt .feature-icon{filter:none}
+.save-date{background:#fffaf3}.save-date h2,.rsvp-section h2,#missionSection h2,#voiceSection h2,#cameraSection h2{color:#5b413d}
+.details-grid article{background:#fffdf9;border-color:rgba(156,120,63,.2);box-shadow:0 12px 30px rgba(91,65,52,.06)}
+.details-grid article:before{background:#c7a46b}
+.countdown{margin-top:42px}.countdown>div{background:#40534a;border-color:rgba(255,255,255,.15);border-radius:18px;box-shadow:0 12px 26px rgba(64,83,74,.16)}.countdown strong{color:#f3d39b}
+.rsvp-card{background:#fffdf9;border-color:rgba(156,120,63,.2);box-shadow:0 18px 42px rgba(91,65,52,.08)}
+.rsvp-card fieldset{background:#fbf5ec;border-color:rgba(156,120,63,.2)}
+.rsvp-card .choice input{accent-color:#9c783f}
+.primary{background:#5b413d;box-shadow:0 8px 20px rgba(91,65,52,.2)}.secondary{border-color:rgba(156,120,63,.35);background:#fffaf3;color:#5b413d}
+button,.primary,.secondary,.hero-rsvp{transition:transform .16s ease,box-shadow .16s ease,background-color .16s ease}button:active,.primary:active,.secondary:active{transform:scale(.96)}
+.rsvp-feedback{position:relative;margin:18px 0 20px;padding:16px 18px;border-radius:18px;text-align:center;overflow:hidden;animation:feedbackIn .32s ease both}
+.rsvp-feedback strong{display:block;font-size:1rem;line-height:1.65}.rsvp-feedback.is-yes{background:linear-gradient(135deg,#fff2c9,#f9dfae);color:#6b4c24;border:1px solid rgba(185,149,91,.38)}.rsvp-feedback.is-no{background:linear-gradient(135deg,#edf0f0,#e6e8e8);color:#5c6665;border:1px solid rgba(98,111,108,.2)}
+.feedback-sparkles{display:block;margin-top:4px;color:#b08339;letter-spacing:.45em;animation:sparklePop .8s ease both}
+@keyframes feedbackIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}@keyframes sparklePop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@media(max-width:700px){.hero-photo-img{object-fit:contain!important}.hero-copy{padding-top:28px;padding-bottom:34px}.floating-tools{margin-bottom:20px}.language-bar{min-height:48px}}
