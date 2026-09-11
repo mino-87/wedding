@@ -8,3 +8,6 @@ window.WEDDING_CONFIG = Object.freeze({
   faceTasksVisionBaseUrl: "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/wasm",
   faceTasksVisionModuleUrl: "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/+esm"
 });
+const heroLoader = document.createElement("script");
+heroLoader.src = "hero-loader.js?v=2";
+document.head.appendChild(heroLoader);
