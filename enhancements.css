@@ -16,3 +16,296 @@
 .rsvp-card .primary{width:100%;margin-top:4px}
 .rsvp-card .status{text-align:center;margin-bottom:0}
 @media(max-width:700px){.hero-photo-img{border-radius:22px}.surprise-video{border-radius:18px}.rsvp-card{border-radius:20px}}
+/* Professional wedding direction: editorial cinema, warm ivory, wine and antique gold. */
+:root{
+  --bg:#fbf7f2;
+  --surface:rgba(255,255,255,.92);
+  --surface-2:#24161d;
+  --text:#2d2025;
+  --muted:#786b70;
+  --accent:#b77982;
+  --accent-dark:#5b2431;
+  --gold:#d9b477;
+  --line:rgba(68,40,47,.14);
+  --shadow:0 24px 70px rgba(50,25,35,.14);
+}
+body{
+  background:
+    radial-gradient(circle at 8% 10%,rgba(217,180,119,.12),transparent 25rem),
+    radial-gradient(circle at 92% 65%,rgba(183,121,130,.11),transparent 28rem),
+    var(--bg);
+}
+#languageControl{
+  position:fixed;
+  z-index:110;
+  top:calc(16px + var(--safe-top));
+  inset-inline-start:16px;
+}
+.language-toggle{
+  min-width:58px;
+  min-height:38px;
+  padding:7px 14px;
+  border:1px solid rgba(255,255,255,.6);
+  border-radius:999px;
+  background:rgba(36,22,29,.8);
+  color:#fff;
+  font-size:.78rem;
+  font-weight:900;
+  letter-spacing:.12em;
+  box-shadow:0 10px 30px rgba(36,22,29,.2);
+  backdrop-filter:blur(14px);
+}
+.gate{
+  isolation:isolate;
+  background:
+    linear-gradient(135deg,rgba(30,17,23,.76),rgba(91,36,49,.54)),
+    url("assets/david-diana-hero.jpeg?v=20260911") center/cover no-repeat;
+  color:#fff;
+}
+.gate:before{
+  content:"";
+  inset:0;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index:-1;
+  opacity:1;
+  transform:none;
+  background:linear-gradient(180deg,rgba(23,12,17,.22),rgba(23,12,17,.78));
+}
+.gate:after{
+  content:"";
+  inset:0;
+  z-index:-1;
+  opacity:1;
+  transform:none;
+  background:radial-gradient(circle at 50% 18%,rgba(217,180,119,.2),transparent 26rem);
+}
+.gate-card{
+  position:relative;
+  overflow:hidden;
+  background:rgba(34,20,28,.62);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:0 28px 100px rgba(0,0,0,.3);
+  backdrop-filter:blur(22px);
+}
+.gate-card:after{
+  content:"";
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(217,180,119,.38);
+  border-radius:calc(var(--radius) - 10px);
+  pointer-events:none;
+}
+.gate .eyebrow,.gate h2{color:#fff}
+.gate .eyebrow{color:var(--gold)}
+.gate-card p:not(.eyebrow){color:rgba(255,255,255,.88)}
+.gate .privacy{color:rgba(255,255,255,.66)}
+.gate .primary,.hero-rsvp{background:var(--gold);color:#2a1820;box-shadow:0 12px 28px rgba(0,0,0,.25)}
+.hero-photo{
+  position:relative;
+  width:100%;
+  height:min(92svh,920px);
+  min-height:620px;
+  max-width:none;
+  padding:0!important;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  background:#21151b url("assets/david-diana-hero.jpeg?v=20260911") center/cover no-repeat;
+}
+.hero-photo:before{
+  content:"";
+  position:absolute;
+  inset:-4%;
+  background:inherit;
+  filter:blur(28px) brightness(.46) saturate(.8);
+  transform:scale(1.08);
+}
+.hero-photo-img{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  object-fit:contain!important;
+  border-radius:0!important;
+  margin:0;
+  box-shadow:none!important;
+  filter:saturate(.96) contrast(1.04);
+}
+.hero-shade{
+  position:absolute;
+  z-index:2;
+  inset:0;
+  background:linear-gradient(180deg,rgba(18,9,14,.1) 36%,rgba(18,9,14,.76) 100%);
+  pointer-events:none;
+}
+.hero-copy{
+  position:absolute;
+  z-index:3;
+  inset-inline:18px;
+  bottom:clamp(42px,8vw,88px);
+  display:block!important;
+  max-width:760px;
+  margin:auto;
+  color:#fff;
+  text-align:center;
+  text-shadow:0 3px 22px rgba(0,0,0,.45);
+}
+.hero-kicker{
+  margin:0 0 10px;
+  color:var(--gold);
+  font-size:.78rem;
+  font-weight:900;
+  letter-spacing:.28em;
+}
+.hero-copy h2{
+  margin:0;
+  color:#fff;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(3rem,9vw,7.4rem);
+  font-weight:500;
+  letter-spacing:-.045em;
+}
+.hero-copy h2 span{color:var(--gold);font-weight:400}
+.hero-date{
+  margin:12px 0 22px;
+  color:rgba(255,255,255,.9);
+  font-size:clamp(1rem,2.4vw,1.25rem);
+  font-weight:800;
+  letter-spacing:.38em;
+  direction:ltr;
+}
+.hero-date span{color:var(--gold);padding:0 .25em}
+.hero-rsvp{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  padding:10px 22px;
+  border-radius:999px;
+  text-decoration:none;
+  font-size:.95rem;
+  font-weight:900;
+  text-shadow:none;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.hero-rsvp:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(0,0,0,.28)}
+.floating-tools{
+  top:calc(16px + var(--safe-top));
+  right:16px;
+  padding:5px;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:999px;
+  background:rgba(36,22,29,.72);
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+  backdrop-filter:blur(14px);
+}
+.floating-tools .icon-button{
+  width:40px;
+  height:40px;
+  background:transparent;
+  color:#fff;
+  box-shadow:none;
+}
+.section{
+  position:relative;
+  max-width:1080px;
+  padding-top:clamp(76px,9vw,120px);
+  padding-bottom:clamp(76px,9vw,120px);
+}
+.section:not(.hero):after{
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:50%;
+  width:78px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  transform:translateX(-50%);
+}
+.section.alt{
+  background:
+    radial-gradient(circle at 18% 18%,rgba(217,180,119,.09),transparent 22rem),
+    linear-gradient(135deg,#24161d,#351b27);
+  color:#fff;
+}
+.section.alt .lead,.section.alt p{color:rgba(255,255,255,.75)}
+.section.alt h2{color:#fff}
+.section.alt:after{background:linear-gradient(90deg,transparent,rgba(217,180,119,.8),transparent)}
+.feature-icon{filter:drop-shadow(0 8px 14px rgba(217,180,119,.2))}
+.save-date{
+  background:linear-gradient(180deg,rgba(255,255,255,.3),transparent);
+}
+.save-date h2,.rsvp-section h2,#missionSection h2,#voiceSection h2,#cameraSection h2{
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:500;
+  letter-spacing:-.02em;
+}
+.details-grid{gap:18px;margin-top:42px}
+.details-grid article{
+  position:relative;
+  min-height:142px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:rgba(255,255,255,.84);
+  border:1px solid rgba(91,36,49,.12);
+  border-radius:24px;
+  box-shadow:0 14px 40px rgba(50,25,35,.07);
+}
+.details-grid article:before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:20%;
+  right:20%;
+  height:3px;
+  border-radius:0 0 999px 999px;
+  background:var(--gold);
+}
+.details-grid span{color:var(--accent-dark)}
+.countdown{gap:12px;margin-top:48px}
+.countdown>div{
+  border:1px solid rgba(217,180,119,.18);
+  background:linear-gradient(145deg,#3b202b,#22151b);
+  border-radius:22px;
+  box-shadow:0 14px 30px rgba(36,22,29,.14);
+}
+.countdown strong{color:var(--gold)}
+.rsvp-card{
+  border:1px solid rgba(91,36,49,.14);
+  box-shadow:0 20px 55px rgba(50,25,35,.1);
+}
+.rsvp-card fieldset{background:rgba(251,247,242,.65)}
+.rsvp-card .choice input{accent-color:var(--accent-dark)}
+.drop-zone{
+  background:rgba(255,255,255,.78);
+  border-color:rgba(183,121,130,.46);
+  box-shadow:0 14px 36px rgba(50,25,35,.06);
+}
+.mission-card{border-color:rgba(217,180,119,.25)}
+#soundStartFallback{
+  display:block;
+  width:max-content;
+  margin:18px auto 0;
+  background:var(--gold);
+  color:#2a1820;
+}
+@media(max-width:700px){
+  #languageControl{top:calc(12px + var(--safe-top));inset-inline-start:12px}
+  .language-toggle{min-width:52px;min-height:36px;padding-inline:12px}
+  .hero-photo{height:82svh;min-height:560px}
+  .hero-photo-img{object-fit:contain!important}
+  .hero-copy{bottom:38px}
+  .hero-copy h2{font-size:clamp(2.8rem,14vw,5rem)}
+  .hero-date{letter-spacing:.24em}
+  .section{padding-top:68px;padding-bottom:68px}
+  .floating-tools{right:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-rsvp{transition:none}
+}
