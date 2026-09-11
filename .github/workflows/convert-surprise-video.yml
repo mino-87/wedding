@@ -1,0 +1,23 @@
+name: Convert surprise video to MP4
+on:
+  push:
+    paths:
+      - '.github/workflows/convert-surprise-video.yml'
+      - 'assets/f3b10b02-0e35-4210-b8ee-10f4ae40319c.mov'
+permissions:
+  contents: write
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Convert MOV to browser-friendly MP4
+        run: |
+          ffmpeg -y -i assets/f3b10b02-0e35-4210-b8ee-10f4ae40319c.mov -c:v libx264 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 192k assets/david-diana-surprise.mp4
+      - name: Commit MP4
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/david-diana-surprise.mp4
+          git diff --cached --quiet || git commit -m "Add browser-friendly surprise MP4"
+          git push
