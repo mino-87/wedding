@@ -12,12 +12,12 @@
   <link rel="stylesheet" href="enhancements.css?v=20260911f" />
 </head>
 <body>
-  <div id="languageControl"><button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language">EN</button></div>
   <noscript><div class="noscript">الموقع يحتاج JavaScript لتشغيل الكاميرا والعدّ التنازلي والتسجيل.</div></noscript>
 
   <section id="gate" class="gate" aria-labelledby="gateTitle">
     <div class="gate-card">
       <p class="eyebrow">SMILE TO UNLOCK 💍</p>
+      <div class="gate-language"><span aria-hidden="true">🌐</span><button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language">EN</button></div>
       <h1 id="gateTitle">David <span>&</span> Diana</h1>
       <h2>الدعوة دي ما بتفتحش بالمجاملة 😏</h2>
       <p>عايزين ضحكة حقيقية للكاميرا… ولما نصدقك، الدعوة تفتح 😄</p>
@@ -41,17 +41,16 @@
     <header class="hero section hero-photo">
       <div class="floating-tools" dir="ltr">
         <button id="musicToggle" class="icon-button" type="button" aria-label="تشغيل أو إيقاف الموسيقى" aria-pressed="false">♫</button>
-        <button id="reopenSmile" class="icon-button" type="button" aria-label="فتح كاميرا الابتسامة">😄</button>
-      </div>
+              </div>
       <img id="heroPhoto" class="hero-photo-img" src="assets/david-diana-hero.jpeg?v=20260911" width="1115" height="1483" alt="David & Diana" decoding="async" fetchpriority="high" />
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-copy">
         <p class="hero-kicker" data-i18n="heroKicker">THE WEDDING OF</p>
         <h2>David <span>&amp;</span> Diana</h2>
         <p class="hero-date">24 <span>•</span> 09 <span>•</span> 2026</p>
-        <a class="hero-rsvp" href="#rsvp" data-i18n="heroRsvp">أكد حضورك ↓</a>
-      </div>
+              </div>
     </header>
+    <div class="language-bar"><span aria-hidden="true">🌐</span><button id="pageLanguageToggle" class="language-toggle" type="button" aria-label="Switch language">EN</button></div>
     <section class="section surprise-section">
       <p class="movie-line">🎬 المفاجأة بدأت!</p>
       <video id="surpriseVideo" class="surprise-video" controls playsinline preload="auto" data-autoplay-after-unlock="true">
@@ -95,6 +94,7 @@
           <label class="choice"><input type="radio" name="attending" value="yes" required /> أيوه، جاي ❤️</label>
           <label class="choice"><input type="radio" name="attending" value="no" required /> للأسف مش هقدر</label>
         </fieldset>
+        <div id="rsvpFeedback" class="rsvp-feedback hidden" aria-live="polite"></div>
         <label id="companionsWrap" class="hidden">عدد المرافقين
           <input id="rsvpCompanions" name="companions" type="number" min="0" max="10" inputmode="numeric" value="0" />
           <small>اكتب عدد الأشخاص اللي جايين معاك، من غير ما تحسب نفسك.</small>
