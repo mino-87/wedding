@@ -4,9 +4,9 @@ window.WEDDING_CONFIG = Object.freeze({
   maxUploadBytes: 40 * 1024 * 1024,
   maxFilesPerBatch: 10,
   maxCentralUploadBytes: 12 * 1024 * 1024,
-  backendEndpoint: "",
-  rsvpEndpoint: "",
-  uploadEndpoint: "",
+  backendEndpoint: "https://script.google.com/macros/s/AKfycbwh-seQeKQoO96gIlnDrjogFjR3mdTB4XyXH3NK96CvyBnnnnSXJbBAHaHQzCdhNDkI8A/exec",
+  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbwh-seQeKQoO96gIlnDrjogFjR3mdTB4XyXH3NK96CvyBnnnnSXJbBAHaHQzCdhNDkI8A/exec",
+  uploadEndpoint: "https://script.google.com/macros/s/AKfycbwh-seQeKQoO96gIlnDrjogFjR3mdTB4XyXH3NK96CvyBnnnnSXJbBAHaHQzCdhNDkI8A/exec",
   google: Object.freeze({
     rsvpSpreadsheetId: "1TKl5kShW27Zuo2ypXuK7UJ5rbV4xJRRfE11HVYB701o",
     rootFolderId: "1OSBFtah86wqU4uIC8LHg47Lh133U5ZR3",
