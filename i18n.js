@@ -126,8 +126,8 @@
     setText('#rsvp .lead','rsvpLead',lang);
     const nameLabel=document.querySelector('#rsvpForm > label:first-of-type');if(nameLabel){const input=nameLabel.querySelector('input');nameLabel.firstChild.nodeValue=translations[lang].nameLabel+'\n          ';if(input)input.placeholder=translations[lang].namePlaceholder}
     setText('#rsvpForm legend','attendingLegend',lang);
-    setLabel('#rsvpForm .choice:nth-child(1)','attendingYes',lang);
-    setLabel('#rsvpForm .choice:nth-child(2)','attendingNo',lang);
+    setLabel('#rsvpForm .choice:nth-of-type(1)','attendingYes',lang);
+    setLabel('#rsvpForm .choice:nth-of-type(2)','attendingNo',lang);
     const companion=document.querySelector('#companionsWrap');if(companion){if(companion.firstChild)companion.firstChild.nodeValue=translations[lang].companionsLabel+'\n          ';setText('#companionsWrap small','companionsHint',lang)}
     setText('#rsvpSubmit','submitRsvp',lang);
     setHtml('#missionSection h2','missionTitle',lang);
