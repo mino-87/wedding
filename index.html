@@ -9,7 +9,7 @@
   <title>David & Diana — 24.09.2026</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="enhancements.css?v=20260911" />
+  <link rel="stylesheet" href="enhancements.css?v=20260911e" />
 </head>
 <body>
   <noscript><div class="noscript">الموقع يحتاج JavaScript لتشغيل الكاميرا والعدّ التنازلي والتسجيل.</div></noscript>
@@ -46,7 +46,7 @@
     </header>
     <section class="section surprise-section">
       <p class="movie-line">🎬 المفاجأة بدأت!</p>
-      <video id="surpriseVideo" class="surprise-video" controls playsinline preload="auto">
+      <video id="surpriseVideo" class="surprise-video" controls playsinline preload="auto" data-autoplay-after-unlock="true">
         <source src="assets/f3b10b02-0e35-4210-b8ee-10f4ae40319c.mov?v=20260911" type="video/quicktime" />
         متصفحك لا يدعم تشغيل الفيديو.
       </video>
@@ -107,7 +107,7 @@
     <section class="section">
       <div class="feature-icon">📸</div>
       <h2>Wedding Drop</h2>
-      <p>لو عندكم لقطة حلوة لينا أو لحظة تستاهل تفضل معانا، اختاروا اللقطات من الموبايل وشاركوها ❤️ التخزين المركزي هنفعّله لاحقًا، لكن باقي الموقع شغال بالكامل.</p>
+      <p>لو عندكم لقطة حلوة لينا أو لحظة تستاهل تفضل معانا، اختاروا اللقطات من الموبايل وابعثوها لنا مباشرة ❤️</p>
       <label class="drop-zone" for="mediaPicker">
         <input id="mediaPicker" type="file" accept="image/*,video/*" multiple />
         <strong>＋ اختار صور أو فيديوهات</strong>
@@ -115,7 +115,7 @@
       </label>
       <div id="mediaPreview" class="preview-grid"></div>
       <div class="actions">
-        <button id="shareMedia" class="primary" type="button" disabled>مشاركة الصور / الفيديوهات</button>
+        <button id="shareMedia" class="primary" type="button" disabled>إرسال الصور / الفيديوهات</button>
       </div>
       <p id="uploadStatus" class="status" aria-live="polite"></p>
     </section>
@@ -173,7 +173,7 @@
 
   <audio id="backgroundMusic" preload="none" loop></audio>
   <script src="config.js"></script>
-  <script src="enhancements.js?v=20260911"></script>
+  <script src="enhancements.js?v=20260911e"></script>
   <script type="module" src="app.js"></script>
 </body>
 </html>
