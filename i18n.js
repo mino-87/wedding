@@ -13,14 +13,14 @@
       heroRsvp:'أكد حضورك ↓',
       movieLine:'🎬 المفاجأة بدأت!',
       saveDateEyebrow:'SAVE THE DATE',
-      saveDateTitle:'Okay… it’s official!',
+      saveDateTitle:'<bdi dir="ltr">Okay… it’s official!</bdi>',
       saveDateLead:'وأخيرًا جه اليوم 😄 مستنيينكم تشاركونا بداية أحلى فصل في حكايتنا وتخلّوا اليوم أحلى بوجودكم.',
       dayLabel:'DAY', dayValue:'الخميس 24 سبتمبر 2026',
       timeLabel:'TIME', timeValue:'5:00 مساءً',
       placeLabel:'PLACE', placeValue:'كنيسة الملاك – شيراتون، القاهرة',
       map:'📍 افتح الموقع',
       countdownDone:'النهارده اليوم الكبير ❤️',
-      rsvpEyebrow:'RSVP', rsvpTitle:'جايين نفرح سوا؟',
+      rsvpEyebrow:'حضوركم', rsvpTitle:'جايين نفرح سوا؟',
       rsvpLead:'أكدوا حضوركم قبل يوم الخميس 17 سبتمبر 2026.',
       nameLabel:'الاسم', namePlaceholder:'اكتب اسمك',
       attendingLegend:'هل هتقدر تحضر؟',
@@ -65,7 +65,7 @@
       placeLabel:'PLACE', placeValue:'Archangel Church – Sheraton, Cairo',
       map:'📍 Open location',
       countdownDone:'Today is the big day ❤️',
-      rsvpEyebrow:'RSVP', rsvpTitle:'Will you celebrate with us?',
+      rsvpEyebrow:'YOUR ATTENDANCE', rsvpTitle:'Will you celebrate with us?',
       rsvpLead:'Please confirm your attendance by Thursday, 17 September 2026.',
       nameLabel:'Name', namePlaceholder:'Enter your name',
       attendingLegend:'Will you be able to attend?',
@@ -146,13 +146,12 @@
     setText('#cameraSection > p','cameraText',lang);
     setText('#openWeddingCamera','openWeddingCamera',lang);
     setText('footer','footer',lang);
-    const toggle=document.querySelector('#languageToggle');if(toggle){toggle.textContent=lang==='ar'?'EN':'عربي';toggle.setAttribute('aria-label',lang==='ar'?'Switch to English':'التبديل للعربية')}
+    document.querySelectorAll('.language-toggle').forEach(toggle=>{toggle.textContent=lang==='ar'?'EN':'عربي';toggle.setAttribute('aria-label',lang==='ar'?'Switch to English':'التبديل للعربية')})
     window.weddingLanguage=lang;
     try{localStorage.setItem('wedding-language',lang)}catch(_){}
     window.dispatchEvent(new CustomEvent('wedding-language-change',{detail:{language:lang}}));
   }
-  const toggle=document.querySelector('#languageToggle');
-  toggle?.addEventListener('click',()=>applyLanguage(window.weddingLanguage==='ar'?'en':'ar'));
+  document.querySelectorAll('.language-toggle').forEach(toggle=>toggle.addEventListener('click',()=>applyLanguage(window.weddingLanguage==='ar'?'en':'ar')));
   let initial='ar';try{const saved=localStorage.getItem('wedding-language');if(saved)initial=saved;else if(/^en/i.test(navigator.language||''))initial='en'}catch(_){}
   window.weddingLanguage=initial;
   applyLanguage(initial);
