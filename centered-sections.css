@@ -51,6 +51,8 @@
   padding-top:clamp(115px,14vh,160px)!important;
   padding-bottom:clamp(55px,7vh,80px)!important;
 }
+/* Remove the oversized D & D watermark from this section only. */
+.camera-section:before{display:none!important;content:none!important}
 .camera-section>.mini-label{
   margin:0 0 clamp(20px,2.7vh,30px)!important;
 }
