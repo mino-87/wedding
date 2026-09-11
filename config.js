@@ -3,6 +3,7 @@ window.WEDDING_CONFIG = Object.freeze({
   rsvpDeadlineIso: "2026-09-17T23:59:59+03:00",
   maxUploadBytes: 40 * 1024 * 1024,
   maxFilesPerBatch: 10,
+  maxCentralUploadBytes: 12 * 1024 * 1024,
   backendEndpoint: "",
   rsvpEndpoint: "",
   uploadEndpoint: "",
