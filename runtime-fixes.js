@@ -17,7 +17,7 @@
       surprise.muted = true;
       surprise.volume = 1;
       const p = surprise.play();
-      p?.then?.(() => { surprise.pause(); surprise.currentTime = 0; }).catch?.(() => {});
+      p?.catch?.(() => {});
     } catch(_) {}
   }
   function addSoundFallback(){
