@@ -9,9 +9,11 @@
   <title>David & Diana — 24.09.2026</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="enhancements.css?v=20260911" />
 </head>
 <body>
   <noscript><div class="noscript">الموقع يحتاج JavaScript لتشغيل الكاميرا والعدّ التنازلي والتسجيل.</div></noscript>
+
   <section id="gate" class="gate" aria-labelledby="gateTitle">
     <div class="gate-card">
       <p class="eyebrow">SMILE TO UNLOCK 💍</p>
@@ -23,6 +25,7 @@
       <p class="privacy">الكاميرا تُستخدم على جهازك فقط لاكتشاف الابتسامة، ولا يتم رفع أو حفظ صورتك.</p>
     </div>
   </section>
+
   <dialog id="smileDialog" class="camera-dialog">
     <form method="dialog"><button class="icon-button close" aria-label="إغلاق">×</button></form>
     <div class="camera-shell">
@@ -32,31 +35,35 @@
     <p id="smileStatus" class="status" aria-live="polite">جارٍ تجهيز الكاميرا…</p>
     <button id="smileFallback" class="secondary hidden" type="button">أنا ابتسمت 😄 — افتح الدعوة</button>
   </dialog>
+
   <main id="invitation" class="hidden">
     <header class="hero section hero-photo">
       <div class="floating-tools" dir="ltr">
         <button id="musicToggle" class="icon-button" type="button" aria-label="تشغيل أو إيقاف الموسيقى" aria-pressed="false">♫</button>
         <button id="reopenSmile" class="icon-button" type="button" aria-label="فتح كاميرا الابتسامة">😄</button>
       </div>
-      <img class="hero-photo-img" src="assets/david-diana-hero.jpeg" alt="David & Diana" fetchpriority="high" />
+      <img id="heroPhoto" class="hero-photo-img" src="assets/david-diana-hero.jpeg?v=20260911" width="1115" height="1483" alt="David & Diana" decoding="async" fetchpriority="high" />
     </header>
     <section class="section surprise-section">
       <p class="movie-line">🎬 المفاجأة بدأت!</p>
-      <video class="surprise-video" controls playsinline preload="metadata">
-        <source src="assets/f3b10b02-0e35-4210-b8ee-10f4ae40319c.mov" type="video/quicktime" />
+      <video id="surpriseVideo" class="surprise-video" controls playsinline preload="auto">
+        <source src="assets/f3b10b02-0e35-4210-b8ee-10f4ae40319c.mov?v=20260911" type="video/quicktime" />
         متصفحك لا يدعم تشغيل الفيديو.
       </video>
     </section>
+
     <section class="section save-date">
       <p class="eyebrow">SAVE THE DATE</p>
       <h2>Okay… it’s official!</h2>
       <p class="lead">وأخيرًا جه اليوم 😄 مستنيينكم تشاركونا بداية أحلى فصل في حكايتنا وتخلّوا اليوم أحلى بوجودكم.</p>
+
       <div class="details-grid">
         <article><span>DAY</span><strong>الخميس 24 سبتمبر 2026</strong></article>
         <article><span>TIME</span><strong>5:00 مساءً</strong></article>
         <article><span>PLACE</span><strong>كنيسة الملاك – شيراتون، القاهرة</strong></article>
       </div>
       <a class="primary inline" href="https://www.google.com/maps/search/?api=1&query=%D9%83%D9%86%D9%8A%D8%B3%D8%A9+%D8%A7%D9%84%D9%85%D9%84%D8%A7%D9%83+%D8%B4%D9%8A%D8%B1%D8%A7%D8%AA%D9%88%D9%86+%D8%A7%D9%84%D9%82%D8%A7%D9%87%D8%B1%D8%A9" target="_blank" rel="noopener noreferrer">📍 افتح الموقع</a>
+
       <div id="countdown" class="countdown" aria-label="الوقت المتبقي للفرح">
         <div><strong data-unit="days">--</strong><span>يوم</span></div>
         <div><strong data-unit="hours">--</strong><span>ساعة</span></div>
@@ -65,6 +72,30 @@
       </div>
       <p id="countdownDone" class="hidden">النهارده اليوم الكبير ❤️</p>
     </section>
+
+    <section id="rsvp" class="section rsvp-section">
+      <div class="feature-icon">💌</div>
+      <p class="eyebrow">RSVP</p>
+      <h2>جايين نفرح سوا؟</h2>
+      <p class="lead">أكدوا حضوركم قبل يوم الخميس 17 سبتمبر 2026.</p>
+      <form id="rsvpForm" class="rsvp-card">
+        <label>الاسم
+          <input id="rsvpName" name="name" type="text" autocomplete="name" maxlength="100" required placeholder="اكتب اسمك" />
+        </label>
+        <fieldset>
+          <legend>هل هتقدر تحضر؟</legend>
+          <label class="choice"><input type="radio" name="attending" value="yes" required /> أيوه، جاي ❤️</label>
+          <label class="choice"><input type="radio" name="attending" value="no" required /> للأسف مش هقدر</label>
+        </fieldset>
+        <label id="companionsWrap" class="hidden">عدد المرافقين
+          <input id="rsvpCompanions" name="companions" type="number" min="0" max="10" inputmode="numeric" value="0" />
+          <small>اكتب عدد الأشخاص اللي جايين معاك، من غير ما تحسب نفسك.</small>
+        </label>
+        <button id="rsvpSubmit" class="primary" type="submit">تأكيد الرد</button>
+        <p id="rsvpStatus" class="status" aria-live="polite"></p>
+      </form>
+    </section>
+
     <section class="section alt">
       <div class="feature-icon">🕵️</div>
       <h2>مهمتك السرية في الفرح 🕵️</h2>
@@ -72,6 +103,7 @@
       <button id="missionButton" class="primary" type="button">🎯 هات المهمة</button>
       <div id="missionCard" class="mission-card hidden" aria-live="polite"></div>
     </section>
+
     <section class="section">
       <div class="feature-icon">📸</div>
       <h2>Wedding Drop</h2>
@@ -82,14 +114,20 @@
         <span>من Gallery الموبايل أو الكمبيوتر</span>
       </label>
       <div id="mediaPreview" class="preview-grid"></div>
-      <div class="actions"><button id="shareMedia" class="primary" type="button" disabled>مشاركة الصور / الفيديوهات</button></div>
+      <div class="actions">
+        <button id="shareMedia" class="primary" type="button" disabled>مشاركة الصور / الفيديوهات</button>
+      </div>
       <p id="uploadStatus" class="status" aria-live="polite"></p>
     </section>
+
     <section class="section alt">
       <div class="feature-icon">🎙️</div>
       <h2>Say it, don’t type it</h2>
       <p>سيبوا لنا فويس نسمعه بعد الفرح: دعوة حلوة، كلمة من القلب، أو نصيحة للمبتدئين في الحياة الزوجية 😂❤️</p>
-      <div class="recorder"><button id="recordButton" class="record-button" type="button" aria-pressed="false">🎙️</button><span id="recordTimer">00:00</span></div>
+      <div class="recorder">
+        <button id="recordButton" class="record-button" type="button" aria-pressed="false">🎙️</button>
+        <span id="recordTimer">00:00</span>
+      </div>
       <p id="recordStatus" class="status">اضغط وابدأ التسجيل — وتقدر تسمعه قبل ما تشاركه.</p>
       <audio id="recordPreview" class="hidden" controls></audio>
       <div id="recordActions" class="actions hidden">
@@ -98,30 +136,44 @@
         <button id="deleteRecording" class="text-button" type="button">مسح وإعادة التسجيل</button>
       </div>
     </section>
+
     <section class="section">
       <div class="feature-icon">📱</div>
       <h2>Wedding Camera</h2>
       <p>افتح الكاميرا وخد صورة من قلب اليوم بالـframe بتاع David & Diana، وبعدها احفظها عندك أو شاركها ❤️</p>
       <button id="openWeddingCamera" class="primary" type="button">📷 Open Wedding Camera</button>
     </section>
+
     <footer>Made with smiles for David & Diana ❤️</footer>
   </main>
+
   <dialog id="weddingCameraDialog" class="camera-dialog wedding-camera-dialog">
     <form method="dialog"><button class="icon-button close" aria-label="إغلاق">×</button></form>
     <div id="weddingView" class="camera-shell wedding-view">
       <video id="weddingVideo" playsinline muted autoplay></video>
       <div class="wedding-frame" aria-hidden="true">
         <div class="spark s1">✨</div><div class="spark s2">💗</div><div class="spark s3">💍</div><div class="spark s4">✨</div>
-        <div class="frame-title">David & Diana</div><div class="frame-date">24.09.2026</div><div class="frame-caption">Smile — you’re at our wedding 😄</div>
+        <div class="frame-title">David & Diana</div>
+        <div class="frame-date">24.09.2026</div>
+        <div class="frame-caption">Smile — you’re at our wedding 😄</div>
       </div>
     </div>
     <canvas id="weddingCanvas" class="hidden"></canvas>
     <p id="weddingCameraStatus" class="status" aria-live="polite"></p>
-    <div class="camera-actions"><button id="switchCamera" class="secondary" type="button">🔄 تبديل الكاميرا</button><button id="capturePhoto" class="primary" type="button">📸 صوّر</button></div>
-    <div id="capturedActions" class="camera-actions hidden"><button id="retakePhoto" class="secondary" type="button">إعادة التصوير</button><button id="savePhoto" class="primary" type="button">حفظ الصورة</button><button id="sharePhoto" class="primary" type="button">مشاركة الصورة</button></div>
+    <div class="camera-actions">
+      <button id="switchCamera" class="secondary" type="button">🔄 تبديل الكاميرا</button>
+      <button id="capturePhoto" class="primary" type="button">📸 صوّر</button>
+    </div>
+    <div id="capturedActions" class="camera-actions hidden">
+      <button id="retakePhoto" class="secondary" type="button">إعادة التصوير</button>
+      <button id="savePhoto" class="primary" type="button">حفظ الصورة</button>
+      <button id="sharePhoto" class="primary" type="button">مشاركة الصورة</button>
+    </div>
   </dialog>
+
   <audio id="backgroundMusic" preload="none" loop></audio>
   <script src="config.js"></script>
+  <script src="enhancements.js?v=20260911"></script>
   <script type="module" src="app.js"></script>
 </body>
 </html>
