@@ -9,21 +9,21 @@
   <title>David & Diana — 24.09.2026</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="enhancements.css?v=20260911g" />
+  <link rel="stylesheet" href="enhancements.css?v=20260911f" />
 </head>
 <body>
   <noscript><div class="noscript">الموقع يحتاج JavaScript لتشغيل الكاميرا والعدّ التنازلي والتسجيل.</div></noscript>
 
   <section id="gate" class="gate" aria-labelledby="gateTitle">
     <div class="gate-card">
-      <p class="eyebrow">SMILE TO UNLOCK 💍</p>
-      <div class="gate-language"><span aria-hidden="true">🌐</span><button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language">EN</button></div>
+      <div class="language-switcher" role="group" aria-label="اختيار اللغة"><button class="language-toggle active" type="button" data-lang="ar">🌐 العربية</button><button class="language-toggle" type="button" data-lang="en">English</button></div>
+      <p class="eyebrow" data-i18n="gateEyebrow">SMILE TO UNLOCK 💍</p>
       <h1 id="gateTitle">David <span>&</span> Diana</h1>
-      <h2>الدعوة دي ما بتفتحش بالمجاملة 😏</h2>
-      <p>عايزين ضحكة حقيقية للكاميرا… ولما نصدقك، الدعوة تفتح 😄</p>
-      <button id="startSmile" class="primary" type="button">📷 افتح الكاميرا</button>
-      <button id="manualUnlock" class="text-button hidden" type="button">الكاميرا مش متعاونة؟ افتح الدعوة يدويًا</button>
-      <p class="privacy">الكاميرا تُستخدم على جهازك فقط لاكتشاف الابتسامة، ولا يتم رفع أو حفظ صورتك.</p>
+      <h2 data-i18n="gateTitleSub">الدعوة دي ما بتفتحش بالمجاملة 😏</h2>
+      <p data-i18n="gateBody">عايزين ضحكة حقيقية للكاميرا… ولما نصدقك، الدعوة تفتح 😄</p>
+      <button id="startSmile" class="primary" type="button" data-i18n="startCamera">📷 افتح الكاميرا</button>
+      <button id="manualUnlock" class="text-button hidden" type="button" data-i18n="manualUnlock">الكاميرا مش متعاونة؟ افتح الدعوة يدويًا</button>
+      <p class="privacy" data-i18n="privacy">الكاميرا تُستخدم على جهازك فقط لاكتشاف الابتسامة، ولا يتم رفع أو حفظ صورتك.</p>
     </div>
   </section>
 
@@ -41,16 +41,10 @@
     <header class="hero section hero-photo">
       <div class="floating-tools" dir="ltr">
         <button id="musicToggle" class="icon-button" type="button" aria-label="تشغيل أو إيقاف الموسيقى" aria-pressed="false">♫</button>
-              </div>
+        <button id="reopenSmile" class="icon-button" type="button" aria-label="فتح كاميرا الابتسامة">😄</button>
+      </div>
       <img id="heroPhoto" class="hero-photo-img" src="assets/david-diana-hero.jpeg?v=20260911" width="1115" height="1483" alt="David & Diana" decoding="async" fetchpriority="high" />
-      <div class="hero-shade" aria-hidden="true"></div>
-      <div class="hero-copy">
-        <p class="hero-kicker" data-i18n="heroKicker">THE WEDDING OF</p>
-        <h2>David <span>&amp;</span> Diana</h2>
-        <p class="hero-date">24 <span>•</span> 09 <span>•</span> 2026</p>
-              </div>
     </header>
-    <div class="language-bar"><span aria-hidden="true">🌐</span><button id="pageLanguageToggle" class="language-toggle" type="button" aria-label="Switch language">EN</button></div>
     <section class="section surprise-section">
       <p class="movie-line">🎬 المفاجأة بدأت!</p>
       <video id="surpriseVideo" class="surprise-video" controls playsinline preload="auto" data-autoplay-after-unlock="true">
@@ -61,15 +55,15 @@
 
     <section class="section save-date">
       <p class="eyebrow">SAVE THE DATE</p>
-      <h2>Okay… it’s official!</h2>
-      <p class="lead">وأخيرًا جه اليوم 😄 مستنيينكم تشاركونا بداية أحلى فصل في حكايتنا وتخلّوا اليوم أحلى بوجودكم.</p>
+      <h2 data-i18n="officialTitle">أوكيه… رسميًّا؟</h2>
+      <p class="lead" data-i18n="officialBody">وأخيرًا جه اليوم 😄 مستنيينكم تشاركونا بداية أحلى فصل في حكايتنا وتخلّوا اليوم أحلى بوجودكم.</p>
 
       <div class="details-grid">
         <article><span>DAY</span><strong>الخميس 24 سبتمبر 2026</strong></article>
         <article><span>TIME</span><strong>5:00 مساءً</strong></article>
         <article><span>PLACE</span><strong>كنيسة الملاك – شيراتون، القاهرة</strong></article>
       </div>
-      <a class="primary inline" href="https://www.google.com/maps/search/?api=1&query=%D9%83%D9%86%D9%8A%D8%B3%D8%A9+%D8%A7%D9%84%D9%85%D9%84%D8%A7%D9%83+%D8%B4%D9%8A%D8%B1%D8%A7%D8%AA%D9%88%D9%86+%D8%A7%D9%84%D9%82%D8%A7%D9%87%D8%B1%D8%A9" target="_blank" rel="noopener noreferrer">📍 افتح الموقع</a>
+      <a class="primary inline" data-i18n="openLocation" href="https://www.google.com/maps/search/?api=1&query=%D9%83%D9%86%D9%8A%D8%B3%D8%A9+%D8%A7%D9%84%D9%85%D9%84%D8%A7%D9%83+%D8%B4%D9%8A%D8%B1%D8%A7%D8%AA%D9%88%D9%86+%D8%A7%D9%84%D9%82%D8%A7%D9%87%D8%B1%D8%A9" target="_blank" rel="noopener noreferrer">📍 افتح الموقع</a>
 
       <div id="countdown" class="countdown" aria-label="الوقت المتبقي للفرح">
         <div><strong data-unit="days">--</strong><span>يوم</span></div>
@@ -82,9 +76,9 @@
 
     <section id="rsvp" class="section rsvp-section">
       <div class="feature-icon">💌</div>
-      <p class="eyebrow">حضوركم</p>
-      <h2>جايين نفرح سوا؟</h2>
-      <p class="lead">أكدوا حضوركم قبل يوم الخميس 17 سبتمبر 2026.</p>
+      <p class="eyebrow" data-i18n="attendanceLabel">حضوركم</p>
+      <h2 data-i18n="rsvpTitle">جايين نفرح سوا؟</h2>
+      <p class="lead" data-i18n="rsvpLead">أكدوا حضوركم قبل يوم الخميس 17 سبتمبر 2026.</p>
       <form id="rsvpForm" class="rsvp-card">
         <label>الاسم
           <input id="rsvpName" name="name" type="text" autocomplete="name" maxlength="100" required placeholder="اكتب اسمك" />
@@ -94,17 +88,16 @@
           <label class="choice"><input type="radio" name="attending" value="yes" required /> أيوه، جاي ❤️</label>
           <label class="choice"><input type="radio" name="attending" value="no" required /> للأسف مش هقدر</label>
         </fieldset>
-        <div id="rsvpFeedback" class="rsvp-feedback hidden" aria-live="polite"></div>
         <label id="companionsWrap" class="hidden">عدد المرافقين
           <input id="rsvpCompanions" name="companions" type="number" min="0" max="10" inputmode="numeric" value="0" />
           <small>اكتب عدد الأشخاص اللي جايين معاك، من غير ما تحسب نفسك.</small>
         </label>
         <button id="rsvpSubmit" class="primary" type="submit">تأكيد الرد</button>
-        <p id="rsvpStatus" class="status" aria-live="polite"></p>
+        <p id="rsvpStatus" class="status" aria-live="polite"></p><p id="rsvpFeedback" class="rsvp-feedback" aria-live="polite"></p>
       </form>
     </section>
 
-    <section id="missionSection" class="section alt">
+    <section class="section alt">
       <div class="feature-icon">🕵️</div>
       <h2>مهمتك السرية في الفرح 🕵️</h2>
       <p>لكل ضيف مهمة صغيرة ولذيذة يوم الفرح 😏 نفّذها من غير ما حد ياخد باله. وبعد ما تخلص مهمتك، صوّرها وحطّها في Wedding Drop ❤️</p>
@@ -128,7 +121,7 @@
       <p id="uploadStatus" class="status" aria-live="polite"></p>
     </section>
 
-    <section id="voiceSection" class="section alt">
+    <section class="section alt">
       <div class="feature-icon">🎙️</div>
       <h2>Say it, don’t type it</h2>
       <p>سيبوا لنا فويس نسمعه بعد الفرح: دعوة حلوة، كلمة من القلب، أو نصيحة للمبتدئين في الحياة الزوجية 😂❤️</p>
@@ -145,7 +138,7 @@
       </div>
     </section>
 
-    <section id="cameraSection" class="section">
+    <section class="section">
       <div class="feature-icon">📱</div>
       <h2>Wedding Camera</h2>
       <p>افتح الكاميرا وخد صورة من قلب اليوم بالـframe بتاع David & Diana، وبعدها احفظها عندك أو شاركها ❤️</p>
@@ -181,8 +174,7 @@
 
   <audio id="backgroundMusic" preload="none" loop></audio>
   <script src="config.js"></script>
-  <script src="enhancements.js?v=20260911g"></script>
-  <script src="i18n.js?v=20260911b"></script>
+  <script src="enhancements.js?v=20260911f"></script>
   <script type="module" src="app.js"></script>
 </body>
 </html>
