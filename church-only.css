@@ -1,0 +1,20 @@
+/* Church-only invitation variant. Keep shared styling/functionality aligned with the full invitation. */
+body.church-only .venue-pair{
+  display:grid!important;
+  grid-template-columns:minmax(0,760px)!important;
+  justify-content:center!important;
+  align-items:stretch!important;
+}
+body.church-only .venue-card.church{
+  width:100%!important;
+  max-width:760px!important;
+  margin-inline:auto!important;
+}
+@media (max-width:720px){
+  body.church-only .venue-pair{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  body.church-only .venue-card.church{
+    max-width:100%!important;
+  }
+}
