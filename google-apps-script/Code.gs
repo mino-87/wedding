@@ -16,7 +16,7 @@ const UPLOAD_LIMITS = {
 };
 
 function doGet() {
-  return output_({ok:true, service:'David & Diana Wedding backend', version:'1.2'});
+  return output_({ok:true, service:'David & Diana Wedding backend', version:'1.3'});
 }
 
 function doPost(e) {
@@ -25,6 +25,7 @@ function doPost(e) {
     if (payload.action === 'rsvp') return saveRsvp_(payload);
     if (payload.action === 'upload') return saveUpload_(payload);
     if (payload.action === 'startResumableUpload') return startResumableUpload_(payload);
+    if (payload.action === 'uploadResumableChunk') return uploadResumableChunk_(payload);
     return output_({ok:false, error:'UNKNOWN_ACTION'});
   } catch (err) {
     return output_({ok:false, error:String(err && err.message || err)});
@@ -162,6 +163,58 @@ function startResumableUpload_(p) {
     sessionUrl: String(sessionUrl),
     maxBytes: limit
   });
+}
+
+function uploadResumableChunk_(p) {
+  var sessionUrl = String(p.sessionUrl || '');
+  var data = String(p.data || '');
+  var mime = clean_(p.mimeType, 100) || 'application/octet-stream';
+  var start = Math.max(0, Number(p.start) || 0);
+  var endExclusive = Math.max(start, Number(p.endExclusive) || 0);
+  var total = Math.max(endExclusive, Number(p.total) || 0);
+
+  if (!/^https:\/\/www\.googleapis\.com\/upload\/drive\/v3\/files\?/i.test(sessionUrl)) {
+    throw new Error('INVALID_RESUMABLE_SESSION');
+  }
+  if (!data) throw new Error('EMPTY_CHUNK');
+  if (!total || endExclusive <= start || endExclusive > total) throw new Error('INVALID_CHUNK_RANGE');
+
+  var bytes = Utilities.base64Decode(data);
+  var expected = endExclusive - start;
+  if (bytes.length !== expected) throw new Error('CHUNK_SIZE_MISMATCH');
+  if (bytes.length > 10 * 1024 * 1024) throw new Error('CHUNK_TOO_LARGE');
+
+  var response = UrlFetchApp.fetch(sessionUrl, {
+    method: 'put',
+    contentType: mime,
+    headers: {
+      'Content-Range': 'bytes ' + start + '-' + (endExclusive - 1) + '/' + total,
+      'Content-Length': String(bytes.length)
+    },
+    payload: bytes,
+    muteHttpExceptions: true,
+    followRedirects: false
+  });
+
+  var code = response.getResponseCode();
+  var headers = response.getAllHeaders();
+  if (code === 308) {
+    return output_({
+      ok: true,
+      action: 'uploadResumableChunk',
+      complete: false,
+      receivedRange: String(headers.Range || headers.range || '')
+    });
+  }
+
+  if (code >= 200 && code < 300) {
+    var body = response.getContentText();
+    var result = {};
+    try { result = body ? JSON.parse(body) : {}; } catch (_) {}
+    return output_({ok:true, action:'uploadResumableChunk', complete:true, result:result});
+  }
+
+  throw new Error('RESUMABLE_CHUNK_FAILED_' + code + ': ' + response.getContentText().slice(0, 400));
 }
 
 function clean_(value, max) {
