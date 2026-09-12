@@ -4,8 +4,7 @@
   const CONFIG = window.WEDDING_CONFIG || {};
   const VIDEO_LIMIT = CONFIG.maxVideoUploadBytes || 500 * 1024 * 1024;
   const IMAGE_LIMIT = CONFIG.maxImageUploadBytes || 25 * 1024 * 1024;
-  const DIRECT_UPLOAD_LIMIT = Math.min(CONFIG.maxCentralUploadBytes || 25 * 1024 * 1024, 25 * 1024 * 1024);
-  const DIRECT_VIDEO_MAX_SECONDS = 5 * 60;
+  const SMALL_IMAGE_LIMIT = 10 * 1024 * 1024;
   const CHUNK_SIZE = 8 * 1024 * 1024;
 
   const $ = (selector) => document.querySelector(selector);
@@ -50,35 +49,6 @@
       reader.onload = () => resolve(String(reader.result || '').split(',')[1] || '');
       reader.onerror = () => reject(new Error('FILE_READ_FAILED'));
       reader.readAsDataURL(file);
-    });
-  }
-
-  function getVideoDuration(file) {
-    return new Promise((resolve) => {
-      if (!isVideo(file)) return resolve(0);
-      const video = document.createElement('video');
-      const url = URL.createObjectURL(file);
-      let finished = false;
-      const done = (value) => {
-        if (finished) return;
-        finished = true;
-        try { URL.revokeObjectURL(url); } catch {}
-        video.removeAttribute('src');
-        resolve(Number.isFinite(value) ? value : null);
-      };
-      const timer = setTimeout(() => done(null), 5000);
-      video.preload = 'metadata';
-      video.muted = true;
-      video.playsInline = true;
-      video.onloadedmetadata = () => {
-        clearTimeout(timer);
-        done(video.duration);
-      };
-      video.onerror = () => {
-        clearTimeout(timer);
-        done(null);
-      };
-      video.src = url;
     });
   }
 
@@ -135,11 +105,8 @@
       },
       body: chunk
     });
-
     if (response.status === 308) return {complete: false};
-    if (response.ok) {
-      return {complete: true, result: await response.json().catch(() => ({}))};
-    }
+    if (response.ok) return {complete: true, result: await response.json().catch(() => ({}))};
     throw new Error('CHUNK_HTTP_' + response.status);
   }
 
@@ -147,12 +114,10 @@
     const sessionUrl = await startResumable(file, kind);
     let start = 0;
     let finalResult = {};
-
     while (start < file.size) {
       const end = Math.min(start + CHUNK_SIZE, file.size);
       let lastError = null;
       let chunkResult = null;
-
       for (let attempt = 1; attempt <= 3; attempt++) {
         try {
           chunkResult = await uploadChunk(sessionUrl, file, start, end);
@@ -163,22 +128,12 @@
           if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 900 * attempt));
         }
       }
-
       if (lastError) throw lastError;
       start = end;
       if (chunkResult && chunkResult.result) finalResult = chunkResult.result;
       if (onProgress) onProgress(start, file.size);
     }
-
     return finalResult;
-  }
-
-  async function shouldUseDirectUpload(file) {
-    if (file.size > DIRECT_UPLOAD_LIMIT) return false;
-    if (!isVideo(file)) return true;
-    const duration = await getVideoDuration(file);
-    if (duration == null) return true;
-    return duration <= DIRECT_VIDEO_MAX_SECONDS;
   }
 
   async function uploadFile(file, index, total) {
@@ -191,13 +146,14 @@
       throw err;
     }
 
-    const direct = await shouldUseDirectUpload(file);
-    if (direct) {
-      setStatus(`جارٍ إرسال ${index + 1} من ${total} مباشرة…`);
+    // Only genuinely small images use Base64. All videos and larger media use
+    // Drive's resumable session so their bytes travel directly to Google Drive.
+    if (!isVideo(file) && file.size <= SMALL_IMAGE_LIMIT) {
+      setStatus(`جارٍ إرسال ${index + 1} من ${total}…`);
       return smallUpload(file, kind);
     }
 
-    setStatus(`جارٍ تجهيز ${index + 1} من ${total} للرفع على دفعات…`);
+    setStatus(`جارٍ تجهيز ${index + 1} من ${total} للرفع…`);
     return resumableUpload(file, kind, (sent, size) => {
       const percent = Math.min(100, Math.round((sent / size) * 100));
       setStatus(`جارٍ إرسال ${index + 1} من ${total} — ${percent}%`);
@@ -207,26 +163,20 @@
   document.addEventListener('click', async (event) => {
     const button = event.target.closest && event.target.closest('#shareMedia');
     if (!button) return;
-
     const files = currentPreviewFiles();
     if (!files.length || !endpoint()) return;
-
     event.preventDefault();
     event.stopImmediatePropagation();
 
     const tooLarge = files.find((file) => file.size > limitFor(file));
     if (tooLarge) {
-      const max = limitFor(tooLarge);
-      setStatus(`${tooLarge.name} أكبر من الحد المسموح (${formatMb(max)}).`);
+      setStatus(`${tooLarge.name} أكبر من الحد المسموح (${formatMb(limitFor(tooLarge))}).`);
       return;
     }
 
     button.disabled = true;
     try {
-      for (let i = 0; i < files.length; i++) {
-        await uploadFile(files[i], i, files.length);
-      }
-
+      for (let i = 0; i < files.length; i++) await uploadFile(files[i], i, files.length);
       setStatus('اترسلت الملفات بنجاح إلى Wedding Drive ❤️');
       const picker = $('#mediaPicker');
       const preview = $('#mediaPreview');
@@ -238,7 +188,7 @@
       if (err && err.message === 'FILE_TOO_LARGE') {
         setStatus('الملف أكبر من الحد المسموح. الصور حتى 25 MB والفيديو حتى 500 MB.');
       } else {
-        setStatus('الرفع متوقف. الملف لم يضِع — جرّب مرة تانية. الفيديوهات الصغيرة حتى 5 دقائق تُرفع مباشرة إذا كان حجمها مناسبًا، والكبيرة تُرفع على دفعات.');
+        setStatus('الرفع متوقف. الملف لم يضِع — جرّب مرة تانية. الفيديوهات تُرفع مباشرة إلى Wedding Drive على دفعات آمنة.');
       }
       button.disabled = false;
     }
