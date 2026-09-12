@@ -10,17 +10,18 @@
   });
 
   /* Reliable RSVP transport.
-     The Vercel endpoint removes browser/CORS redirect problems with Apps Script.
-     The original Apps Script URL remains as a temporary fallback while a new
-     Vercel deployment is propagating. */
+     Vercel production uses the local /api/rsvp proxy.
+     GitHub Pages test URLs talk directly to Apps Script so tests do not consume Vercel usage. */
   const rsvpForm=document.querySelector('#rsvpForm');
   if(rsvpForm){
     const rsvpStatus=document.querySelector('#rsvpStatus');
     const rsvpSubmit=document.querySelector('#rsvpSubmit');
     const companionsWrap=document.querySelector('#companionsWrap');
     const companionsInput=document.querySelector('#rsvpCompanions');
-    const proxyUrl='https://david-diana-wedding.vercel.app/api/rsvp';
     const directUrl=window.WEDDING_CONFIG?.rsvpEndpoint||window.WEDDING_CONFIG?.backendEndpoint||'';
+    const isVercel=/\.vercel\.app$/i.test(location.hostname);
+    const primaryUrl=isVercel?'/api/rsvp':directUrl;
+    const fallbackUrl=isVercel?directUrl:'';
     const isEnglish=()=>String(document.documentElement.lang||'').toLowerCase().startsWith('en');
     const text=(ar,en)=>isEnglish()?en:ar;
     const setStatus=value=>{if(rsvpStatus)rsvpStatus.textContent=value;};
@@ -34,6 +35,7 @@
     updateCompanions();
 
     async function postRsvp(url,payload){
+      if(!url)throw new Error('RSVP_ENDPOINT_MISSING');
       const response=await fetch(url,{
         method:'POST',
         headers:{'Content-Type':'text/plain;charset=utf-8'},
@@ -75,11 +77,11 @@
       setStatus(text('جارٍ حفظ الرد…','Saving your response…'));
       try{
         try{
-          await postRsvp(proxyUrl,payload);
-        }catch(proxyError){
-          console.warn('RSVP proxy error',proxyError);
-          if(!directUrl||directUrl===proxyUrl||![404,405,501].includes(Number(proxyError.status)))throw proxyError;
-          await postRsvp(directUrl,payload);
+          await postRsvp(primaryUrl,payload);
+        }catch(primaryError){
+          console.warn('RSVP primary transport error',primaryError);
+          if(!fallbackUrl||fallbackUrl===primaryUrl)throw primaryError;
+          await postRsvp(fallbackUrl,payload);
         }
         setStatus(text('تم تسجيل ردك بنجاح ❤️','Your response has been saved successfully ❤️'));
         rsvpForm.reset();
