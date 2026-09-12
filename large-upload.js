@@ -43,17 +43,17 @@
     }).slice(0, CONFIG.maxFilesPerBatch || 10);
   }
 
-  function fileAsBase64(file) {
+  function blobAsBase64(blob) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(String(reader.result || '').split(',')[1] || '');
       reader.onerror = () => reject(new Error('FILE_READ_FAILED'));
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(blob);
     });
   }
 
   async function smallUpload(file, kind) {
-    const data = await fileAsBase64(file);
+    const data = await blobAsBase64(file);
     const response = await fetch(endpoint(), {
       method: 'POST',
       headers: {'Content-Type': 'text/plain;charset=utf-8'},
@@ -97,17 +97,24 @@
 
   async function uploadChunk(sessionUrl, file, start, endExclusive) {
     const chunk = file.slice(start, endExclusive);
-    const response = await fetch(sessionUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': file.type || 'application/octet-stream',
-        'Content-Range': `bytes ${start}-${endExclusive - 1}/${file.size}`
-      },
-      body: chunk
+    const data = await blobAsBase64(chunk);
+    const response = await fetch(endpoint(), {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify({
+        action: 'uploadResumableChunk',
+        sessionUrl,
+        mimeType: file.type || 'application/octet-stream',
+        start,
+        endExclusive,
+        total: file.size,
+        data
+      })
     });
-    if (response.status === 308) return {complete: false};
-    if (response.ok) return {complete: true, result: await response.json().catch(() => ({}))};
-    throw new Error('CHUNK_HTTP_' + response.status);
+    if (!response.ok) throw new Error('CHUNK_PROXY_HTTP_' + response.status);
+    const result = await response.json().catch(() => null);
+    if (!result || result.ok === false) throw new Error((result && result.error) || 'CHUNK_PROXY_FAILED');
+    return result;
   }
 
   async function resumableUpload(file, kind, onProgress) {
@@ -146,8 +153,6 @@
       throw err;
     }
 
-    // Only genuinely small images use Base64. All videos and larger media use
-    // Drive's resumable session so their bytes travel directly to Google Drive.
     if (!isVideo(file) && file.size <= SMALL_IMAGE_LIMIT) {
       setStatus(`جارٍ إرسال ${index + 1} من ${total}…`);
       return smallUpload(file, kind);
@@ -188,7 +193,7 @@
       if (err && err.message === 'FILE_TOO_LARGE') {
         setStatus('الملف أكبر من الحد المسموح. الصور حتى 25 MB والفيديو حتى 500 MB.');
       } else {
-        setStatus('الرفع متوقف. الملف لم يضِع — جرّب مرة تانية. الفيديوهات تُرفع مباشرة إلى Wedding Drive على دفعات آمنة.');
+        setStatus(`الرفع متوقف: ${err?.message || 'خطأ غير معروف'}. جرّب مرة تانية.`);
       }
       button.disabled = false;
     }
