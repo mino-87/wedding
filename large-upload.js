@@ -4,8 +4,9 @@
   const CONFIG = window.WEDDING_CONFIG || {};
   const VIDEO_LIMIT = CONFIG.maxVideoUploadBytes || 500 * 1024 * 1024;
   const IMAGE_LIMIT = CONFIG.maxImageUploadBytes || 25 * 1024 * 1024;
-  const SMALL_UPLOAD_LIMIT = 10 * 1024 * 1024;
-  const CHUNK_SIZE = 8 * 1024 * 1024; // 8 MiB; multiple of Drive's 256 KiB chunk requirement.
+  const DIRECT_UPLOAD_LIMIT = Math.min(CONFIG.maxCentralUploadBytes || 25 * 1024 * 1024, 25 * 1024 * 1024);
+  const DIRECT_VIDEO_MAX_SECONDS = 5 * 60;
+  const CHUNK_SIZE = 8 * 1024 * 1024;
 
   const $ = (selector) => document.querySelector(selector);
   const endpoint = () => CONFIG.uploadEndpoint || CONFIG.backendEndpoint || '';
@@ -49,6 +50,35 @@
       reader.onload = () => resolve(String(reader.result || '').split(',')[1] || '');
       reader.onerror = () => reject(new Error('FILE_READ_FAILED'));
       reader.readAsDataURL(file);
+    });
+  }
+
+  function getVideoDuration(file) {
+    return new Promise((resolve) => {
+      if (!isVideo(file)) return resolve(0);
+      const video = document.createElement('video');
+      const url = URL.createObjectURL(file);
+      let finished = false;
+      const done = (value) => {
+        if (finished) return;
+        finished = true;
+        try { URL.revokeObjectURL(url); } catch {}
+        video.removeAttribute('src');
+        resolve(Number.isFinite(value) ? value : null);
+      };
+      const timer = setTimeout(() => done(null), 5000);
+      video.preload = 'metadata';
+      video.muted = true;
+      video.playsInline = true;
+      video.onloadedmetadata = () => {
+        clearTimeout(timer);
+        done(video.duration);
+      };
+      video.onerror = () => {
+        clearTimeout(timer);
+        done(null);
+      };
+      video.src = url;
     });
   }
 
@@ -143,6 +173,14 @@
     return finalResult;
   }
 
+  async function shouldUseDirectUpload(file) {
+    if (file.size > DIRECT_UPLOAD_LIMIT) return false;
+    if (!isVideo(file)) return true;
+    const duration = await getVideoDuration(file);
+    if (duration == null) return true;
+    return duration <= DIRECT_VIDEO_MAX_SECONDS;
+  }
+
   async function uploadFile(file, index, total) {
     const kind = isVideo(file) ? 'video' : 'media';
     const limit = limitFor(file);
@@ -153,27 +191,17 @@
       throw err;
     }
 
-    // Small images keep the lightweight path. Videos use Drive resumable upload,
-    // with a fallback for an older Apps Script deployment while it is being updated.
-    if (!isVideo(file) && file.size <= SMALL_UPLOAD_LIMIT) {
-      setStatus(`جارٍ إرسال ${index + 1} من ${total}…`);
+    const direct = await shouldUseDirectUpload(file);
+    if (direct) {
+      setStatus(`جارٍ إرسال ${index + 1} من ${total} مباشرة…`);
       return smallUpload(file, kind);
     }
 
-    try {
-      return await resumableUpload(file, kind, (sent, size) => {
-        const percent = Math.min(100, Math.round((sent / size) * 100));
-        setStatus(`جارٍ إرسال ${index + 1} من ${total} — ${percent}%`);
-      });
-    } catch (err) {
-      // Preserve old behavior for small files if the live Apps Script version has
-      // not yet been redeployed with resumable support.
-      if (file.size <= SMALL_UPLOAD_LIMIT && (err.code === 'UNKNOWN_ACTION' || err.message === 'RESUMABLE_NOT_AVAILABLE')) {
-        setStatus(`جارٍ إرسال ${index + 1} من ${total}…`);
-        return smallUpload(file, kind);
-      }
-      throw err;
-    }
+    setStatus(`جارٍ تجهيز ${index + 1} من ${total} للرفع على دفعات…`);
+    return resumableUpload(file, kind, (sent, size) => {
+      const percent = Math.min(100, Math.round((sent / size) * 100));
+      setStatus(`جارٍ إرسال ${index + 1} من ${total} — ${percent}%`);
+    });
   }
 
   document.addEventListener('click', async (event) => {
@@ -183,7 +211,6 @@
     const files = currentPreviewFiles();
     if (!files.length || !endpoint()) return;
 
-    // Take ownership before app.js's legacy Base64 upload handler runs.
     event.preventDefault();
     event.stopImmediatePropagation();
 
@@ -211,7 +238,7 @@
       if (err && err.message === 'FILE_TOO_LARGE') {
         setStatus('الملف أكبر من الحد المسموح. الصور حتى 25 MB والفيديو حتى 500 MB.');
       } else {
-        setStatus('الرفع متوقف. الملف لم يضِع — جرّب مرة تانية، ولو كان فيديو كبير سيكمل على دفعات.');
+        setStatus('الرفع متوقف. الملف لم يضِع — جرّب مرة تانية. الفيديوهات الصغيرة حتى 5 دقائق تُرفع مباشرة إذا كان حجمها مناسبًا، والكبيرة تُرفع على دفعات.');
       }
       button.disabled = false;
     }
