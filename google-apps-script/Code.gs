@@ -16,7 +16,7 @@ const UPLOAD_LIMITS = {
 };
 
 function doGet() {
-  return output_({ok:true, service:'David & Diana Wedding backend', version:'1.4'});
+  return output_({ok:true, service:'David & Diana Wedding backend', version:'1.5'});
 }
 
 function authorizeWeddingBackend() {
@@ -163,8 +163,7 @@ function uploadResumableChunk_(p) {
     method: 'put',
     contentType: mime,
     headers: {
-      'Content-Range': 'bytes ' + start + '-' + (endExclusive - 1) + '/' + total,
-      'Content-Length': String(bytes.length)
+      'Content-Range': 'bytes ' + start + '-' + (endExclusive - 1) + '/' + total
     },
     payload: bytes,
     muteHttpExceptions: true,
