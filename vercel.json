@@ -1,0 +1,25 @@
+{
+  "redirects": [
+    {
+      "source": "/church",
+      "destination": "/together/?v=20260913-final",
+      "permanent": false
+    },
+    {
+      "source": "/church/",
+      "destination": "/together/?v=20260913-final",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/together/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    }
+  ]
+}
