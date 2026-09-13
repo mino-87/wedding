@@ -97,24 +97,41 @@
 
   async function uploadChunk(sessionUrl, file, start, endExclusive) {
     const chunk = file.slice(start, endExclusive);
-    const data = await blobAsBase64(chunk);
-    const response = await fetch(endpoint(), {
-      method: 'POST',
-      headers: {'Content-Type': 'text/plain;charset=utf-8'},
-      body: JSON.stringify({
-        action: 'uploadResumableChunk',
-        sessionUrl,
-        mimeType: file.type || 'application/octet-stream',
-        start,
-        endExclusive,
-        total: file.size,
-        data
-      })
-    });
-    if (!response.ok) throw new Error('CHUNK_PROXY_HTTP_' + response.status);
-    const result = await response.json().catch(() => null);
-    if (!result || result.ok === false) throw new Error((result && result.error) || 'CHUNK_PROXY_FAILED');
-    return result;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 120000);
+    try {
+      const response = await fetch(sessionUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': file.type || 'application/octet-stream',
+          'Content-Range': `bytes ${start}-${endExclusive - 1}/${file.size}`
+        },
+        body: chunk,
+        signal: controller.signal
+      });
+
+      const receivedRange = response.headers.get('Range') || '';
+      if (response.status === 308) {
+        return {ok: true, complete: false, receivedRange};
+      }
+
+      const raw = await response.text();
+      let result = {};
+      try { result = raw ? JSON.parse(raw) : {}; } catch (_) {}
+      if (response.status >= 200 && response.status < 300) {
+        return {ok: true, complete: true, receivedRange, result};
+      }
+
+      const error = new Error(`DRIVE_CHUNK_HTTP_${response.status}`);
+      error.status = response.status;
+      error.details = raw.slice(0, 240);
+      throw error;
+    } catch (error) {
+      if (error && error.name === 'AbortError') throw new Error('UPLOAD_TIMEOUT');
+      throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
   }
 
   async function resumableUpload(file, kind, onProgress) {
