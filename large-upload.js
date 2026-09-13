@@ -5,7 +5,7 @@
   const VIDEO_LIMIT = CONFIG.maxVideoUploadBytes || 500 * 1024 * 1024;
   const IMAGE_LIMIT = CONFIG.maxImageUploadBytes || 25 * 1024 * 1024;
   const SMALL_IMAGE_LIMIT = 10 * 1024 * 1024;
-  const CHUNK_SIZE = 8 * 1024 * 1024;
+  const CHUNK_SIZE = 3 * 1024 * 1024;
 
   const $ = (selector) => document.querySelector(selector);
   const endpoint = () => CONFIG.uploadEndpoint || CONFIG.backendEndpoint || '';
@@ -95,42 +95,70 @@
     return result.sessionUrl;
   }
 
-  async function uploadChunk(sessionUrl, file, start, endExclusive) {
-    const chunk = file.slice(start, endExclusive);
+  async function requestWithTimeout(url, options) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 120000);
     try {
-      const response = await fetch(sessionUrl, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': file.type || 'application/octet-stream',
-          'Content-Range': `bytes ${start}-${endExclusive - 1}/${file.size}`
-        },
-        body: chunk,
-        signal: controller.signal
-      });
-
-      const receivedRange = response.headers.get('Range') || '';
-      if (response.status === 308) {
-        return {ok: true, complete: false, receivedRange};
-      }
-
-      const raw = await response.text();
-      let result = {};
-      try { result = raw ? JSON.parse(raw) : {}; } catch (_) {}
-      if (response.status >= 200 && response.status < 300) {
-        return {ok: true, complete: true, receivedRange, result};
-      }
-
-      const error = new Error(`DRIVE_CHUNK_HTTP_${response.status}`);
-      error.status = response.status;
-      error.details = raw.slice(0, 240);
-      throw error;
+      return await fetch(url, {...options, signal: controller.signal});
     } catch (error) {
       if (error && error.name === 'AbortError') throw new Error('UPLOAD_TIMEOUT');
       throw error;
     } finally {
       clearTimeout(timeout);
+    }
+  }
+
+  async function proxyChunk(sessionUrl, file, start, endExclusive, chunk) {
+    const response = await requestWithTimeout('/api/upload-chunk', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/octet-stream',
+        'X-Upload-Session': sessionUrl,
+        'X-Upload-Mime-Type': file.type || 'application/octet-stream',
+        'X-Upload-Start': String(start),
+        'X-Upload-End': String(endExclusive),
+        'X-Upload-Total': String(file.size)
+      },
+      body: chunk
+    });
+    const result = await response.json().catch(() => null);
+    if (!response.ok || !result || result.ok === false) {
+      throw new Error((result && result.error) || `CHUNK_BRIDGE_HTTP_${response.status}`);
+    }
+    return result;
+  }
+
+  async function uploadChunk(sessionUrl, file, start, endExclusive) {
+    const chunk = file.slice(start, endExclusive);
+    const isFinalChunk = endExclusive === file.size;
+
+    if (isFinalChunk) {
+      return proxyChunk(sessionUrl, file, start, endExclusive, chunk);
+    }
+
+    try {
+      const response = await requestWithTimeout(sessionUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': file.type || 'application/octet-stream',
+          'Content-Range': `bytes ${start}-${endExclusive - 1}/${file.size}`
+        },
+        body: chunk
+      });
+
+      const receivedRange = response.headers.get('Range') || '';
+      if (response.status === 308) return {ok:true,complete:false,receivedRange};
+
+      const raw = await response.text();
+      let result = {};
+      try { result = raw ? JSON.parse(raw) : {}; } catch (_) {}
+      if (response.status >= 200 && response.status < 300) {
+        return {ok:true,complete:true,receivedRange,result};
+      }
+      throw new Error(`DRIVE_CHUNK_HTTP_${response.status}`);
+    } catch (error) {
+      console.warn('Direct Drive chunk response unavailable; using same-origin bridge.', error);
+      return proxyChunk(sessionUrl, file, start, endExclusive, chunk);
     }
   }
 
