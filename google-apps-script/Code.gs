@@ -16,7 +16,23 @@ const UPLOAD_LIMITS = {
 };
 
 function doGet() {
-  return output_({ok:true, service:'David & Diana Wedding backend', version:'1.3'});
+  return output_({ok:true, service:'David & Diana Wedding backend', version:'1.4'});
+}
+
+function authorizeWeddingBackend() {
+  SpreadsheetApp.openById(IDS.spreadsheet).getName();
+  DriveApp.getFolderById(IDS.videos).getName();
+  var token = ScriptApp.getOAuthToken();
+  var response = UrlFetchApp.fetch('https://www.googleapis.com/drive/v3/about?fields=user', {
+    method: 'get',
+    headers: { Authorization: 'Bearer ' + token },
+    muteHttpExceptions: true
+  });
+  if (response.getResponseCode() < 200 || response.getResponseCode() >= 300) {
+    throw new Error('AUTH_CHECK_FAILED_' + response.getResponseCode() + ': ' + response.getContentText().slice(0, 300));
+  }
+  Logger.log('Wedding backend authorized successfully.');
+  return 'OK';
 }
 
 function doPost(e) {
@@ -36,16 +52,13 @@ function saveRsvp_(p) {
   var ss = SpreadsheetApp.openById(IDS.spreadsheet);
   var sheet = ss.getSheetByName('RSVP');
   if (!sheet) throw new Error('RSVP_SHEET_NOT_FOUND');
-
   var name = clean_(p.name, 100);
   var attending = p.attending === 'yes' ? 'yes' : p.attending === 'no' ? 'no' : '';
   if (!name || !attending) throw new Error('INVALID_RSVP');
-
   var companions = attending === 'yes' ? Math.max(0, Math.min(10, Number(p.companions) || 0)) : 0;
   var totalGuests = attending === 'yes' ? 1 + companions : 0;
   var now = new Date();
   var responseId = Utilities.getUuid();
-
   var lock = LockService.getScriptLock();
   lock.waitLock(15000);
   try {
@@ -55,22 +68,15 @@ function saveRsvp_(p) {
     if (lastRow >= 2) {
       var names = sheet.getRange(2, 1, lastRow - 1, 1).getDisplayValues();
       for (var i = 0; i < names.length; i++) {
-        if (normalize_(names[i][0]) === key) {
-          targetRow = i + 2;
-          break;
-        }
+        if (normalize_(names[i][0]) === key) { targetRow = i + 2; break; }
       }
     }
-
     if (targetRow) {
       var old = sheet.getRange(targetRow, 1, 1, 8).getValues()[0];
       responseId = old[6] || responseId;
-      sheet.getRange(targetRow, 1, 1, 8).setValues([[
-        name, attending, companions, totalGuests, old[4] || now, now, responseId, 'website'
-      ]]);
+      sheet.getRange(targetRow, 1, 1, 8).setValues([[name, attending, companions, totalGuests, old[4] || now, now, responseId, 'website']]);
       return output_({ok:true, action:'rsvp', updated:true, responseId:responseId});
     }
-
     sheet.appendRow([name, attending, companions, totalGuests, now, now, responseId, 'website']);
     return output_({ok:true, action:'rsvp', updated:false, responseId:responseId});
   } finally {
@@ -97,18 +103,14 @@ function uploadLimitFor_(kind, mime) {
 function saveUpload_(p) {
   var data = String(p.data || '');
   if (!data || data.length > 34000000) throw new Error('FILE_TOO_LARGE');
-
   var kind = String(p.kind || 'media');
   var filename = clean_(p.name, 120) || ('wedding-' + Date.now());
   var mime = clean_(p.mimeType, 100) || 'application/octet-stream';
   var bytes = Utilities.base64Decode(data);
   var limit = uploadLimitFor_(kind, mime);
   if (bytes.length > limit) throw new Error('FILE_TOO_LARGE');
-
   var stamp = Utilities.formatDate(new Date(), 'Africa/Cairo', 'yyyyMMdd-HHmmss');
-  var file = DriveApp.getFolderById(folderForKind_(kind)).createFile(
-    Utilities.newBlob(bytes, mime, stamp + '-' + filename)
-  );
+  var file = DriveApp.getFolderById(folderForKind_(kind)).createFile(Utilities.newBlob(bytes, mime, stamp + '-' + filename));
   file.setDescription('David & Diana Wedding upload | ' + kind);
   return output_({ok:true, action:'upload', kind:kind, fileId:file.getId(), name:file.getName(), size:bytes.length});
 }
@@ -119,50 +121,28 @@ function startResumableUpload_(p) {
   var mime = clean_(p.mimeType, 100) || 'application/octet-stream';
   var size = Math.max(0, Number(p.size) || 0);
   var limit = uploadLimitFor_(kind, mime);
-
   if (!size) throw new Error('INVALID_FILE_SIZE');
   if (size > limit) throw new Error('FILE_TOO_LARGE');
-
   var stamp = Utilities.formatDate(new Date(), 'Africa/Cairo', 'yyyyMMdd-HHmmss');
-  var metadata = {
-    name: stamp + '-' + filename,
-    mimeType: mime,
-    parents: [folderForKind_(kind)],
-    description: 'David & Diana Wedding upload | ' + kind
-  };
-
-  var response = UrlFetchApp.fetch(
-    'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&fields=id,name,size,mimeType',
-    {
-      method: 'post',
-      contentType: 'application/json; charset=UTF-8',
-      headers: {
-        Authorization: 'Bearer ' + ScriptApp.getOAuthToken(),
-        'X-Upload-Content-Type': mime,
-        'X-Upload-Content-Length': String(size)
-      },
-      payload: JSON.stringify(metadata),
-      muteHttpExceptions: true,
-      followRedirects: false
-    }
-  );
-
+  var metadata = { name: stamp + '-' + filename, mimeType: mime, parents: [folderForKind_(kind)], description: 'David & Diana Wedding upload | ' + kind };
+  var response = UrlFetchApp.fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&fields=id,name,size,mimeType', {
+    method: 'post',
+    contentType: 'application/json; charset=UTF-8',
+    headers: {
+      Authorization: 'Bearer ' + ScriptApp.getOAuthToken(),
+      'X-Upload-Content-Type': mime,
+      'X-Upload-Content-Length': String(size)
+    },
+    payload: JSON.stringify(metadata),
+    muteHttpExceptions: true,
+    followRedirects: false
+  });
   var code = response.getResponseCode();
-  if (code < 200 || code >= 300) {
-    throw new Error('RESUMABLE_INIT_FAILED_' + code + ': ' + response.getContentText().slice(0, 400));
-  }
-
+  if (code < 200 || code >= 300) throw new Error('RESUMABLE_INIT_FAILED_' + code + ': ' + response.getContentText().slice(0, 400));
   var headers = response.getAllHeaders();
   var sessionUrl = headers.Location || headers.location;
   if (!sessionUrl) throw new Error('RESUMABLE_SESSION_MISSING');
-
-  return output_({
-    ok: true,
-    action: 'startResumableUpload',
-    kind: kind,
-    sessionUrl: String(sessionUrl),
-    maxBytes: limit
-  });
+  return output_({ok:true, action:'startResumableUpload', kind:kind, sessionUrl:String(sessionUrl), maxBytes:limit});
 }
 
 function uploadResumableChunk_(p) {
@@ -172,18 +152,13 @@ function uploadResumableChunk_(p) {
   var start = Math.max(0, Number(p.start) || 0);
   var endExclusive = Math.max(start, Number(p.endExclusive) || 0);
   var total = Math.max(endExclusive, Number(p.total) || 0);
-
-  if (!/^https:\/\/www\.googleapis\.com\/upload\/drive\/v3\/files\?/i.test(sessionUrl)) {
-    throw new Error('INVALID_RESUMABLE_SESSION');
-  }
+  if (!/^https:\/\/www\.googleapis\.com\/upload\/drive\/v3\/files\?/i.test(sessionUrl)) throw new Error('INVALID_RESUMABLE_SESSION');
   if (!data) throw new Error('EMPTY_CHUNK');
   if (!total || endExclusive <= start || endExclusive > total) throw new Error('INVALID_CHUNK_RANGE');
-
   var bytes = Utilities.base64Decode(data);
   var expected = endExclusive - start;
   if (bytes.length !== expected) throw new Error('CHUNK_SIZE_MISMATCH');
   if (bytes.length > 10 * 1024 * 1024) throw new Error('CHUNK_TOO_LARGE');
-
   var response = UrlFetchApp.fetch(sessionUrl, {
     method: 'put',
     contentType: mime,
@@ -195,25 +170,15 @@ function uploadResumableChunk_(p) {
     muteHttpExceptions: true,
     followRedirects: false
   });
-
   var code = response.getResponseCode();
   var headers = response.getAllHeaders();
-  if (code === 308) {
-    return output_({
-      ok: true,
-      action: 'uploadResumableChunk',
-      complete: false,
-      receivedRange: String(headers.Range || headers.range || '')
-    });
-  }
-
+  if (code === 308) return output_({ok:true, action:'uploadResumableChunk', complete:false, receivedRange:String(headers.Range || headers.range || '')});
   if (code >= 200 && code < 300) {
     var body = response.getContentText();
     var result = {};
     try { result = body ? JSON.parse(body) : {}; } catch (_) {}
     return output_({ok:true, action:'uploadResumableChunk', complete:true, result:result});
   }
-
   throw new Error('RESUMABLE_CHUNK_FAILED_' + code + ': ' + response.getContentText().slice(0, 400));
 }
 
