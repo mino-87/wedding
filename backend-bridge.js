@@ -96,12 +96,16 @@
   }
 
   const scripts=[
-    ['refinements.js?v=20260911y','refinements.js?v=20260911y'],
-    ['large-upload.js?v=20260911z2','large-upload.js?v=20260911z2'],
-    ['camera-iphone-fix.js?v=20260911z2','camera-iphone-fix.js?v=20260911z2']
+    ['refinements.js?v=20260911y','refinements.js'],
+    ['large-upload.js?v=20260913a','large-upload.js'],
+    ['camera-iphone-fix.js?v=20260911z3','camera-iphone-fix.js']
   ];
-  for(const [src,marker] of scripts){
-    if([...document.scripts].some(s=>String(s.src||'').includes(marker))) continue;
+  for(const [src,fileName] of scripts){
+    const alreadyLoaded=[...document.scripts].some(script=>{
+      try{return new URL(script.src,location.href).pathname.endsWith('/'+fileName);}
+      catch(_){return false;}
+    });
+    if(alreadyLoaded)continue;
     const script=document.createElement('script');
     script.src=src;
     script.async=false;
