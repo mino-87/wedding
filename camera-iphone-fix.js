@@ -63,18 +63,23 @@
     }, true);
   }
 
-  if (actions && !document.querySelector('#cancelWeddingCamera')) {
-    const cancel = document.createElement('button');
+  let cancel = document.querySelector('#cancelWeddingCamera');
+  if (actions && !cancel) {
+    cancel = document.createElement('button');
     cancel.id = 'cancelWeddingCamera';
     cancel.type = 'button';
     cancel.className = 'secondary wedding-camera-cancel';
+    actions.appendChild(cancel);
+  }
+
+  if (cancel) {
+    cancel.type = 'button';
     cancel.textContent = lang() === 'en' ? 'Cancel' : 'إلغاء';
     cancel.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
       closeCamera();
     }, true);
-    actions.appendChild(cancel);
 
     new MutationObserver(() => {
       cancel.textContent = lang() === 'en' ? 'Cancel' : 'إلغاء';
