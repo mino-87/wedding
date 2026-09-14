@@ -10,6 +10,11 @@ body.church-only .venue-card.church{
   max-width:760px!important;
   margin-inline:auto!important;
 }
+body.church-only #rsvp,
+body.church-only .attendance-section,
+body.church-only .rsvp-deadline{
+  display:none!important;
+}
 @media (max-width:720px){
   body.church-only .venue-pair{
     grid-template-columns:minmax(0,1fr)!important;
